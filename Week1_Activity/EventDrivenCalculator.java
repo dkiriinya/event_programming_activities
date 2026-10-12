@@ -1,5 +1,3 @@
-package Week1_EDP;
-
 import javax.swing.*;
 import java.awt.*;
 public class EventDrivenCalculator extends JFrame {

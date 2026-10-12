@@ -1,5 +1,3 @@
-package Week1_EDP;
-
 import java.util.Scanner;
 public class ProceduralCalculator {
  public static void main(String[] args) {
