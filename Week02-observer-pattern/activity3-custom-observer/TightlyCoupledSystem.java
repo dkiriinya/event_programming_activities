@@ -8,11 +8,7 @@ public class TightlyCoupledSystem {
 
     // The DataModel directly references every display.
     static class DataModel {
-        private int value;
-
         public void setValue(int value) {
-            this.value = value;
-
             // Directly calling the UI updates — tightly coupled!
             new LabelDisplay().showValue(value);
             new BarChartDisplay().drawBar(value);
