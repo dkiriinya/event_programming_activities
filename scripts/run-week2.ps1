@@ -6,11 +6,13 @@
 .EXAMPLE
     .\scripts\run-week2.ps1             # Interactive menu
     .\scripts\run-week2.ps1 -All        # Runs all activities
+    .\scripts\run-week2.ps1 -Launcher   # Opens the Master GUI Dashboard
     .\scripts\run-week2.ps1 -Activity 1 # Runs WeatherStationMain
 #>
 
 param(
     [switch]$All,
+    [switch]$Launcher,
     [string]$Activity
 )
 
@@ -28,6 +30,12 @@ $activities = @(
 function Start-ActivityApp($act) {
     Write-Host "Launching [$($act.Id)] $($act.Name)..." -ForegroundColor Cyan
     Start-Process powershell -ArgumentList "-NoExit", "-Command", "Write-Host '=== $($act.Name) ===' -ForegroundColor Yellow; java -cp `"$($act.Folder)`" $($act.Class)"
+}
+
+if ($Launcher) {
+    Write-Host "Launching Week 2 Master GUI Dashboard..." -ForegroundColor Green
+    Start-Process java -ArgumentList "-cp", "`"$week2Dir`"", "Week2Launcher"
+    exit
 }
 
 if ($All) {
@@ -53,6 +61,7 @@ Clear-Host
 Write-Host "==========================================================" -ForegroundColor Cyan
 Write-Host "         WEEK 2: OBSERVER DESIGN PATTERN RUNNER           " -ForegroundColor Yellow
 Write-Host "==========================================================" -ForegroundColor Cyan
+Write-Host " [G]  Open Master GUI Dashboard (Week2Launcher)" -ForegroundColor Green
 Write-Host " [A]  Launch ALL Week 2 activities at once" -ForegroundColor Magenta
 Write-Host "----------------------------------------------------------"
 foreach ($act in $activities) {
@@ -64,6 +73,9 @@ Write-Host "==========================================================" -Foregro
 $choice = Read-Host "Select an option"
 
 switch ($choice.ToUpper().Trim()) {
+    "G" {
+        Start-Process java -ArgumentList "-cp", "`"$week2Dir`"", "Week2Launcher"
+    }
     "A" {
         foreach ($act in $activities) {
             Start-ActivityApp $act

@@ -34,6 +34,7 @@ Write-Host " [4]  Week 4: Interactive Swing Event Handling (Listeners & Shortcut
 Write-Host " [5]  Week 5: Advanced Swing Components (JTable, JTree, File Manager)" -ForegroundColor Green
 Write-Host "----------------------------------------------------------"
 Write-Host " Quick GUI Dashboards:"
+Write-Host " [G2] Week 2 Master GUI Dashboard (Observer Simulations)" -ForegroundColor Green
 Write-Host " [G3] Week 3 Master GUI Dashboard"
 Write-Host " [G4] Week 4 Master GUI Dashboard" -ForegroundColor Green
 Write-Host " [G5] Week 5 Master GUI Dashboard" -ForegroundColor Green
@@ -49,6 +50,7 @@ switch ($choice.ToUpper().Trim()) {
     "3"  { & (Join-Path $scriptDir "run-week3.ps1") }
     "4"  { & (Join-Path $scriptDir "run-week4.ps1") }
     "5"  { & (Join-Path $scriptDir "run-week5.ps1") }
+    "G2" { & (Join-Path $scriptDir "run-week2.ps1") -Launcher }
     "G3" { & (Join-Path $scriptDir "run-week3.ps1") -Launcher }
     "G4" { & (Join-Path $scriptDir "run-week4.ps1") -Launcher }
     "G5" { & (Join-Path $scriptDir "run-week5.ps1") -Launcher }

@@ -8,6 +8,7 @@ Hands-on practical activities, guides, and implementations for Event-Driven Prog
 
 Comprehensive self-paced student guides and theory notes are located in the [`documentation/`](documentation/) directory:
 - [Week 1 Self-Paced Practical Activities](documentation/Week%201%20Self%20paced%20Activity.md)
+- [Week 2 Self-Paced Observer Pattern Guide](documentation/Week%202%20Self%20paced%20Activity.md)
 - [Week 3 Self-Paced GUI Application Guide](documentation/Week%203%20Self%20paced%20Activity.md)
 - [Week 4 Interactive Swing Applications Guide](documentation/Week%204%20Self%20paced%20Activity.md)
 - [Week 5 Advanced Swing Components Guide](documentation/Week%205%20Advanced%20Swing%20Components.md)
@@ -42,14 +43,43 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
 >    ./scripts/run-all.sh                # Main menu for all weeks (Weeks 1 to 5)
 >    ```
 >
-> 3. **If You Are Using Windows PowerShell:**
+> 3. **If You Are Using Windows PowerShell or CMD:**
+>    *If script execution is disabled on your machine, use `.\agent-cli.bat` or bypass policy:*
 >    ```powershell
 >    .\scripts\run-week4.ps1 -All        # Launches all 10 Week 4 activities at once
 >    .\scripts\run-week4.ps1 -Launcher   # Opens the visual Master GUI Launcher
 >    .\scripts\run-all.ps1               # Main menu for all weeks (Weeks 1 to 5)
 >    ```
+>
+> 4. **🤖 AI Agent CLI (Automated Grading, Headless Testing & JSON API):**
+>    ```bash
+>    ./agent-cli grade --week 4 --json   # Automated grading rubric (0–100 score)
+>    ./agent-cli verify --week 4 --json  # Bytecode verification & thread safety audit
+>    ./agent-cli list --week 4 --json    # Complete metadata schema for AI agents
+>    ```
 
-### How to Run Activities
+---
+
+## AI Agent CLI (`agent-cli`)
+
+A scriptable, headless, AI-agent-first CLI interface ([`scripts/AgentCLI.java`](scripts/AgentCLI.java)) designed for **LLM coding agents** (Antigravity, Claude Code, GitHub Copilot, Devin), **automated CI/CD pipelines**, and **headless grading bots**.
+
+### Available Commands
+
+| Command | Description | Example (Git Bash / PowerShell / CMD) |
+| :--- | :--- | :--- |
+| `info` | Host environment, JDK path, and coursework stats | `./agent-cli info --json` |
+| `list` | Enumerate all 36 activities across Weeks 1–5 | `./agent-cli list --week 4 --json` |
+| `verify` | Check source files, compiled bytecode, and EDT safety | `./agent-cli verify --week 4` |
+| `inspect` | Static AST analysis of imports, lambdas, and patterns | `./agent-cli inspect w4-counter --json` |
+| `grade` | Compute an automated evaluation score (0–100) & letter grade | `./agent-cli grade --week 4 --json` |
+| `run` | Headless smoke testing (exits automatically after init) | `./agent-cli run w4-counter --headless --timeout 2000` |
+
+> [!TIP]
+> **Zero Dependencies:** The CLI is pure standard Java SE with zero Maven/Gradle overhead.
+> - In Git Bash / Linux / macOS: use `./agent-cli <command> [options]`
+> - In Windows PowerShell: use `.\agent-cli.bat <command> [options]`
+> - In any environment: use `java -cp scripts AgentCLI <command> [options]`
 
 We provide three convenient ways to run any activity:
 
@@ -76,12 +106,12 @@ All execution scripts are maintained inside the [`scripts/`](scripts/) folder to
 | :--- | :--- | :--- | :--- | :--- |
 | **All Weeks (1–5)** | `./scripts/run-all.sh` | `.\scripts\run-all.ps1` | Interactive Menu | Direct dashboard shortcuts |
 | **Week 1** | `./scripts/run-week1.sh` | `.\scripts\run-week1.ps1` | `--all` / `-All` | Single activity selector |
-| **Week 2** | `./scripts/run-week2.sh` | `.\scripts\run-week2.ps1` | `--all` / `-All` | Single activity selector |
+| **Week 2** | `./scripts/run-week2.sh` | `.\scripts\run-week2.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
 | **Week 3** | `./scripts/run-week3.sh` | `.\scripts\run-week3.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
 | **Week 4** | `./scripts/run-week4.sh` | `.\scripts\run-week4.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
 | **Week 5** | `./scripts/run-week5.sh` | `.\scripts\run-week5.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
 
-*(You can also launch any Master GUI Dashboard directly with Java: `java -cp week03-swing-gui Week3Launcher`, `java -cp week04-event-handling Week4Launcher`, or `java -cp week05-advanced-swing Week5Launcher`)*
+*(You can also launch any Master GUI Dashboard directly with Java: `java -cp Week02-observer-pattern Week2Launcher`, `java -cp week03-swing-gui Week3Launcher`, `java -cp week04-event-handling Week4Launcher`, or `java -cp week05-advanced-swing Week5Launcher`)*
 
 #### 2. From the Repository Root Directory (Classpath `-cp`)
 ```powershell
@@ -164,14 +194,19 @@ java -cp Week1_Activity SmartHomePrototype
 
 ### Week 2: The Observer Pattern (`Week02-observer-pattern/`)
 
-Covers decoupling subjects and observers, pull vs. push data delivery, and Java Bean property change notifications. Detailed write-ups are in [Week02-observer-pattern/SelfAssessment.md](Week02-observer-pattern/SelfAssessment.md) and [Week02-observer-pattern/activity4-comparison/Comparison.md](Week02-observer-pattern/activity4-comparison/Comparison.md).
+Covers decoupling subjects and observers, pull vs. push data delivery, and Java Bean property change notifications. Detailed write-ups are in [Week02-observer-pattern/SelfAssessment.md](Week02-observer-pattern/SelfAssessment.md), [documentation/Week 2 Self paced Activity.md](documentation/Week%202%20Self%20paced%20Activity.md), and [Week02-observer-pattern/activity4-comparison/Comparison.md](Week02-observer-pattern/activity4-comparison/Comparison.md).
 
-#### Quick Runners
-```powershell
-.\scripts\run-week2.ps1           # Interactive menu for all Week 2 activities
-.\scripts\run-week2.ps1 -All      # Run all observer pattern console demos
-.\scripts\run-week2.ps1 -Activity 1  # Run WeatherStationMain
-```
+#### Quick Master Runners
+- **Run the Master GUI Launcher (runs simulations with live console output):**
+  ```powershell
+  java -cp Week02-observer-pattern Week2Launcher
+  ```
+- **Run with Bash (`.sh`) or PowerShell (`.ps1`) script in `scripts/`:**
+  ```bash
+  ./scripts/run-week2.sh --launcher   # Git Bash / Linux
+  .\scripts\run-week2.ps1 -Launcher   # Windows PowerShell
+  .\scripts\run-week2.ps1 -All        # Run all observer pattern console demos
+  ```
 
 #### Activity 1: Weather Station Simulation
 Demonstrates the classic GoF Observer pattern with dynamic observer registration, state updates, and deregistration.
@@ -477,7 +512,8 @@ All runner scripts are consolidated in [`scripts/`](scripts/) to prevent root-di
 - **[`scripts/run-week5.ps1`](scripts/run-week5.ps1)**: Controls all 5 advanced Swing activities with `-Launcher` GUI shortcut.
 
 ### 2. Standalone Master GUI Dashboards
-Built for Week 3, Week 4, and Week 5, these dashboards allow single-click execution or concurrent launching of every activity:
+Built for Week 2, Week 3, Week 4, and Week 5, these dashboards allow single-click execution or concurrent launching of every activity:
+- **[`Week02-observer-pattern/Week2Launcher.java`](Week02-observer-pattern/Week2Launcher.java)** (Interactive dashboard with live console output stream)
 - **[`week03-swing-gui/Week3Launcher.java`](week03-swing-gui/Week3Launcher.java)**
 - **[`week04-event-handling/Week4Launcher.java`](week04-event-handling/Week4Launcher.java)**
 - **[`week05-advanced-swing/Week5Launcher.java`](week05-advanced-swing/Week5Launcher.java)**

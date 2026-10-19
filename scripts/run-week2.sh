@@ -13,6 +13,11 @@ run_app() {
     echo ""
 }
 
+launch_launcher() {
+    echo -e "\033[32mOpening Master GUI Dashboard (Week2Launcher)...\033[0m"
+    (cd "$DIR" && java -cp "$WEEK2_DIR" Week2Launcher) &
+}
+
 case "$1" in
     --all|-a)
         echo -e "\033[32mRunning all Week 2 observer pattern console demos...\033[0m\n"
@@ -23,12 +28,17 @@ case "$1" in
         run_app "$WEEK2_DIR/activity4-comparison" "PropertyChangeDemo" "4. PropertyChangeListener Demo"
         exit 0
         ;;
+    --launcher|-g)
+        launch_launcher
+        exit 0
+        ;;
 esac
 
 clear
 echo -e "\033[36m==========================================================\033[0m"
 echo -e "\033[33m         WEEK 2: OBSERVER DESIGN PATTERN RUNNER           \033[0m"
 echo -e "\033[36m==========================================================\033[0m"
+echo -e " \033[32m[G]\033[0m  Open Master GUI Dashboard (Week2Launcher)"
 echo -e " \033[35m[A]\033[0m  Run ALL Week 2 console demos sequentially"
 echo -e "----------------------------------------------------------"
 echo " [1]  Weather Station App (Observer Pattern)"
@@ -42,6 +52,7 @@ echo -e "\033[36m==========================================================\033[
 read -p "Select an option: " choice
 
 case "${choice^^}" in
+    G)  launch_launcher ;;
     A)
         run_app "$WEEK2_DIR/activity1-weather-station" "WeatherStationMain" "Weather Station Simulation"
         run_app "$WEEK2_DIR/activity2-legacy-observer" "LegacyMain" "Legacy Observer Demo"

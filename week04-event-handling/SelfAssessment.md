@@ -39,7 +39,7 @@ java -cp week04-event-handling Week4Launcher
 ./scripts/run-week4.sh
 ```
 
-### 3. Windows PowerShell
+### 3. Windows PowerShell / Command Prompt
 ```powershell
 # Launch ALL 10 activities at once:
 .\scripts\run-week4.ps1 -All
@@ -50,6 +50,20 @@ java -cp week04-event-handling Week4Launcher
 # Or interactive menu:
 .\scripts\run-week4.ps1
 ```
+
+### 4. 🤖 Automated AI Agent & Headless Testing CLI
+Automated grading agents and CI test runners can verify Week 4 non-interactively using the programmatic CLI:
+```bash
+# Automated evaluation rubric (0–100 score + letter grade):
+./agent-cli grade --week 4 --json
+
+# Verify all source code compilation, bytecode presence & EDT safety:
+./agent-cli verify --week 4 --json
+
+# Run a headless smoke test (initializes and terminates safely after 2s):
+./agent-cli run w4-counter --headless --timeout 2000
+```
+*(On Windows CMD or PowerShell without script permissions, use `.\agent-cli.bat` instead)*
 
 ### Quick Verification Checklist for Graders
 

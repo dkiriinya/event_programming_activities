@@ -39,6 +39,7 @@ echo -e " \033[32m[4]\033[0m  Week 4: Interactive Swing Event Handling (Listener
 echo -e " \033[32m[5]\033[0m  Week 5: Advanced Swing Components (JTable, JTree, File Manager)"
 echo "----------------------------------------------------------"
 echo " Quick GUI Dashboards:"
+echo -e " \033[32m[G2]\033[0m Week 2 Master GUI Dashboard (Observer Simulations)"
 echo " [G3] Week 3 Master GUI Dashboard"
 echo -e " \033[32m[G4]\033[0m Week 4 Master GUI Dashboard"
 echo -e " \033[32m[G5]\033[0m Week 5 Master GUI Dashboard"
@@ -54,6 +55,7 @@ case "${choice^^}" in
     3)  bash "$DIR/run-week3.sh" ;;
     4)  bash "$DIR/run-week4.sh" ;;
     5)  bash "$DIR/run-week5.sh" ;;
+    G2) bash "$DIR/run-week2.sh" --launcher ;;
     G3) bash "$DIR/run-week3.sh" --launcher ;;
     G4) bash "$DIR/run-week4.sh" --launcher ;;
     G5) bash "$DIR/run-week5.sh" --launcher ;;
