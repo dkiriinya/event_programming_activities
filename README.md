@@ -25,18 +25,35 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
   ```
 
 ### How to Run Activities
-You can run any activity either:
-1. **From the repository root directory** (recommended) using `-cp` (classpath):
-   ```powershell
-   javac <path/to/folder>/*.java
-   java -cp <path/to/folder> <MainClassName>
-   ```
-2. **From inside the specific activity directory**:
-   ```powershell
-   cd <path/to/folder>
-   javac *.java
-   java <MainClassName>
-   ```
+
+We provide three convenient ways to run any activity:
+
+#### 1. Interactive Scripts & GUI Launchers (Organized in `scripts/` — Recommended)
+All execution scripts are maintained inside the [`scripts/`](scripts/) folder to keep the repository root clean:
+
+| Week / Scope | Interactive Script | Run All Activities | Master GUI Dashboard |
+| :--- | :--- | :--- | :--- |
+| **All Weeks (1–5)** | `.\scripts\run-all.ps1` | Interactive Menu | Direct dashboard shortcuts |
+| **Week 1** | `.\scripts\run-week1.ps1` | `.\scripts\run-week1.ps1 -All` | `.\scripts\run-week1.ps1 -Activity 2` |
+| **Week 2** | `.\scripts\run-week2.ps1` | `.\scripts\run-week2.ps1 -All` | `.\scripts\run-week2.ps1 -Activity 1` |
+| **Week 3** | `.\scripts\run-week3.ps1` | `.\scripts\run-week3.ps1 -All` | `.\scripts\run-week3.ps1 -Launcher` |
+| **Week 4** | `.\scripts\run-week4.ps1` | `.\scripts\run-week4.ps1 -All` | `.\scripts\run-week4.ps1 -Launcher` |
+| **Week 5** | `.\scripts\run-week5.ps1` | `.\scripts\run-week5.ps1 -All` | `.\scripts\run-week5.ps1 -Launcher` |
+
+*(You can also launch any Master GUI Dashboard directly with Java: `java -cp week03-swing-gui Week3Launcher`, `java -cp week04-event-handling Week4Launcher`, or `java -cp week05-advanced-swing Week5Launcher`)*
+
+#### 2. From the Repository Root Directory (Classpath `-cp`)
+```powershell
+javac <path/to/folder>/*.java
+java -cp <path/to/folder> <MainClassName>
+```
+
+#### 3. From Inside the Specific Activity Directory
+```powershell
+cd <path/to/folder>
+javac *.java
+java <MainClassName>
+```
 
 ---
 
@@ -45,6 +62,13 @@ You can run any activity either:
 ### Week 1: Fundamentals of Event-Driven Programming (`Week1_Activity/`)
 
 Detailed design notes and bug-fix analyses are in [Week1_Activity/SelfAssessment.md](Week1_Activity/SelfAssessment.md), [Week1_Activity/SystemDesign.md](Week1_Activity/SystemDesign.md), and [Week1_Activity/BugFixChallenge/BugFixes.md](Week1_Activity/BugFixChallenge/BugFixes.md).
+
+#### Quick Runners
+```powershell
+.\scripts\run-week1.ps1           # Interactive menu for all Week 1 activities
+.\scripts\run-week1.ps1 -All      # Run all activities (CLI + GUI)
+.\scripts\run-week1.ps1 -Activity 2  # Run EventDrivenCalculator
+```
 
 #### Activity 3: Procedural vs. Event-Driven Comparison
 Compare synchronous procedural execution vs. asynchronous GUI event loop.
@@ -101,6 +125,13 @@ java -cp Week1_Activity SmartHomePrototype
 
 Covers decoupling subjects and observers, pull vs. push data delivery, and Java Bean property change notifications. Detailed write-ups are in [Week02-observer-pattern/SelfAssessment.md](Week02-observer-pattern/SelfAssessment.md) and [Week02-observer-pattern/activity4-comparison/Comparison.md](Week02-observer-pattern/activity4-comparison/Comparison.md).
 
+#### Quick Runners
+```powershell
+.\scripts\run-week2.ps1           # Interactive menu for all Week 2 activities
+.\scripts\run-week2.ps1 -All      # Run all observer pattern console demos
+.\scripts\run-week2.ps1 -Activity 1  # Run WeatherStationMain
+```
+
 #### Activity 1: Weather Station Simulation
 Demonstrates the classic GoF Observer pattern with dynamic observer registration, state updates, and deregistration.
 
@@ -147,6 +178,18 @@ java -cp Week02-observer-pattern/activity4-comparison PropertyChangeDemo
 ### Week 3: Building GUI Applications with Swing (`week03-swing-gui/`)
 
 Covers Swing top-level containers (`JFrame`), core widgets, layout manager algorithms, thread safety rules for the Event Dispatch Thread (EDT), and UI mockups. Detailed report is in [week03-swing-gui/SelfAssessment.md](week03-swing-gui/SelfAssessment.md).
+
+#### Quick Master Runners
+- **Run the Master GUI Launcher (runs all activities from one dashboard):**
+  ```powershell
+  java -cp week03-swing-gui Week3Launcher
+  ```
+- **Run with PowerShell script in `scripts/` (interactive menu or launch all at once):**
+  ```powershell
+  .\scripts\run-week3.ps1           # Interactive menu
+  .\scripts\run-week3.ps1 -All      # Launches all 9 activities simultaneously
+  .\scripts\run-week3.ps1 -Launcher # Opens Master GUI Launcher
+  ```
 
 #### Activity 1: First Swing Window
 Creates a centered `JFrame` configured on the EDT via `SwingUtilities.invokeLater()`.
@@ -218,6 +261,18 @@ java -cp week03-swing-gui/activity5-complete-mockup StudentPortal
 ### Week 4: Event Handling in Swing (`week04-event-handling/`)
 
 Covers listener styles (`ActionListener`, `ItemListener`, `DocumentListener`), event source inspection, keyboard shortcuts (`KeyStroke` & `ActionMap`), comprehensive form validation, and low-level mouse/keyboard adapters. Detailed assessment is in [week04-event-handling/SelfAssessment.md](week04-event-handling/SelfAssessment.md).
+
+#### Quick Master Runners
+- **Run the Master GUI Launcher (runs all activities from one dashboard):**
+  ```powershell
+  java -cp week04-event-handling Week4Launcher
+  ```
+- **Run with PowerShell script in `scripts/` (interactive menu or launch all at once):**
+  ```powershell
+  .\scripts\run-week4.ps1           # Interactive menu
+  .\scripts\run-week4.ps1 -All      # Launches all 10 activities simultaneously
+  .\scripts\run-week4.ps1 -Launcher # Opens Master GUI Launcher
+  ```
 
 #### Activity 1: ActionListener Basics
 Simple button interaction with popup dialog via lambda `ActionListener`.
@@ -296,6 +351,18 @@ Low-level input processing using `MouseAdapter` and `KeyAdapter`.
 
 Covers advanced data components (`JList`, `JTable`, `JTree`, `JTabbedPane`), custom cell renderers, menus, toolbars, file choosers, modal dialogs, and multi-pane split architectures. Detailed assessment is in [week05-advanced-swing/SelfAssessment.md](week05-advanced-swing/SelfAssessment.md).
 
+#### Quick Master Runners
+- **Run the Master GUI Launcher (runs all activities from one dashboard):**
+  ```powershell
+  java -cp week05-advanced-swing Week5Launcher
+  ```
+- **Run with PowerShell script in `scripts/` (interactive menu or launch all at once):**
+  ```powershell
+  .\scripts\run-week5.ps1           # Interactive menu
+  .\scripts\run-week5.ps1 -All      # Launches all 5 activities simultaneously
+  .\scripts\run-week5.ps1 -Launcher # Opens Master GUI Launcher
+  ```
+
 #### Activity 1: JList and Custom Renderers
 Contact list featuring a custom `ListCellRenderer` with status dot icons (Online, Away, Offline) and selection state listener.
 
@@ -352,3 +419,28 @@ javac (Get-ChildItem -Path week05-advanced-swing -Filter *.java -Recurse | Selec
 # Or compile Week 4 specifically:
 javac (Get-ChildItem -Path week04-event-handling -Filter *.java -Recurse | Select-Object -ExpandProperty FullName)
 ```
+
+---
+
+## Centralized Automation & Master Launchers Architecture
+
+To keep the repository clean, structured, and easy to run across all modules, dedicated automation and launcher layers have been added:
+
+### 1. Organized Scripts Directory (`scripts/`)
+All runner scripts are consolidated in [`scripts/`](scripts/) to prevent root-directory clutter:
+- **[`scripts/run-all.ps1`](scripts/run-all.ps1)**: Interactive hub dispatcher to explore or launch any activity from Week 1 through Week 5.
+- **[`scripts/run-week1.ps1`](scripts/run-week1.ps1)**: CLI & GUI launcher with interactive menu, `-All` flag, and `-Activity <id>`.
+- **[`scripts/run-week2.ps1`](scripts/run-week2.ps1)**: Observer pattern test runner executing console simulations in non-closing windows.
+- **[`scripts/run-week3.ps1`](scripts/run-week3.ps1)**: Controls all 9 layout and EDT activities with `-Launcher` GUI shortcut.
+- **[`scripts/run-week4.ps1`](scripts/run-week4.ps1)**: Controls all 10 event-handling activities with `-Launcher` GUI shortcut.
+- **[`scripts/run-week5.ps1`](scripts/run-week5.ps1)**: Controls all 5 advanced Swing activities with `-Launcher` GUI shortcut.
+
+### 2. Standalone Master GUI Dashboards
+Built for Week 3, Week 4, and Week 5, these dashboards allow single-click execution or concurrent launching of every activity:
+- **[`week03-swing-gui/Week3Launcher.java`](week03-swing-gui/Week3Launcher.java)**
+- **[`week04-event-handling/Week4Launcher.java`](week04-event-handling/Week4Launcher.java)**
+- **[`week05-advanced-swing/Week5Launcher.java`](week05-advanced-swing/Week5Launcher.java)**
+
+### 3. Process Isolation & Safety
+- Each application launched through the GUI dashboards or PowerShell scripts runs as an independent OS process via Java's `ProcessBuilder` or PowerShell's `Start-Process`.
+- This ensures that when a student or instructor closes any window containing `frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)`, only that specific activity terminates without closing the dashboard or sibling activity windows.
