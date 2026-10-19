@@ -24,21 +24,62 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
   javac -version
   ```
 
+> [!IMPORTANT]
+> ### 🎓 Instructor & Grader Quick-Run Guide
+> To evaluate all student submissions quickly without terminal errors, use the commands matching your environment:
+>
+> 1. **Universal One-Command GUI Dashboard (Runs in ANY terminal on Windows/macOS/Linux):**
+>    ```bash
+>    java -cp week04-event-handling Week4Launcher
+>    ```
+>    *Opens the visual dashboard where you can launch any activity or click "Launch All 10 Activities Concurrently".*
+>
+> 2. **If You Are Using Git Bash (`MINGW64`) or macOS / Linux:**
+>    *⚠️ DO NOT use Windows backslashes `.\scripts\run-week4.ps1` in Git Bash — backslashes are escape characters in Bash and will throw `bash: .scriptsrun-week4.ps1: command not found`.*
+>    ```bash
+>    ./scripts/run-week4.sh --all        # Launches all 10 Week 4 activities at once
+>    ./scripts/run-week4.sh --launcher   # Opens the visual Master GUI Launcher
+>    ./scripts/run-all.sh                # Main menu for all weeks (Weeks 1 to 5)
+>    ```
+>
+> 3. **If You Are Using Windows PowerShell:**
+>    ```powershell
+>    .\scripts\run-week4.ps1 -All        # Launches all 10 Week 4 activities at once
+>    .\scripts\run-week4.ps1 -Launcher   # Opens the visual Master GUI Launcher
+>    .\scripts\run-all.ps1               # Main menu for all weeks (Weeks 1 to 5)
+>    ```
+
 ### How to Run Activities
 
 We provide three convenient ways to run any activity:
 
 #### 1. Interactive Scripts & GUI Launchers (Organized in `scripts/` — Recommended)
-All execution scripts are maintained inside the [`scripts/`](scripts/) folder to keep the repository root clean:
+All execution scripts are maintained inside the [`scripts/`](scripts/) folder to keep the repository root clean.
 
-| Week / Scope | Interactive Script | Run All Activities | Master GUI Dashboard |
-| :--- | :--- | :--- | :--- |
-| **All Weeks (1–5)** | `.\scripts\run-all.ps1` | Interactive Menu | Direct dashboard shortcuts |
-| **Week 1** | `.\scripts\run-week1.ps1` | `.\scripts\run-week1.ps1 -All` | `.\scripts\run-week1.ps1 -Activity 2` |
-| **Week 2** | `.\scripts\run-week2.ps1` | `.\scripts\run-week2.ps1 -All` | `.\scripts\run-week2.ps1 -Activity 1` |
-| **Week 3** | `.\scripts\run-week3.ps1` | `.\scripts\run-week3.ps1 -All` | `.\scripts\run-week3.ps1 -Launcher` |
-| **Week 4** | `.\scripts\run-week4.ps1` | `.\scripts\run-week4.ps1 -All` | `.\scripts\run-week4.ps1 -Launcher` |
-| **Week 5** | `.\scripts\run-week5.ps1` | `.\scripts\run-week5.ps1 -All` | `.\scripts\run-week5.ps1 -Launcher` |
+##### **For Git Bash / Linux / macOS (`.sh`):**
+```bash
+./scripts/run-all.sh            # Main interactive menu for all weeks (1 to 5)
+./scripts/run-week4.sh          # Week 4 interactive menu
+./scripts/run-week4.sh --all    # Launch all 10 Week 4 activities concurrently
+./scripts/run-week4.sh --launcher # Open Week 4 Master GUI Dashboard
+```
+
+##### **For Windows PowerShell (`.ps1`):**
+```powershell
+.\scripts\run-all.ps1           # Main interactive menu for all weeks (1 to 5)
+.\scripts\run-week4.ps1         # Week 4 interactive menu
+.\scripts\run-week4.ps1 -All    # Launch all 10 Week 4 activities concurrently
+.\scripts\run-week4.ps1 -Launcher # Open Week 4 Master GUI Dashboard
+```
+
+| Week / Scope | Git Bash (`.sh`) | PowerShell (`.ps1`) | Run All Concurrently | Master GUI Dashboard |
+| :--- | :--- | :--- | :--- | :--- |
+| **All Weeks (1–5)** | `./scripts/run-all.sh` | `.\scripts\run-all.ps1` | Interactive Menu | Direct dashboard shortcuts |
+| **Week 1** | `./scripts/run-week1.sh` | `.\scripts\run-week1.ps1` | `--all` / `-All` | Single activity selector |
+| **Week 2** | `./scripts/run-week2.sh` | `.\scripts\run-week2.ps1` | `--all` / `-All` | Single activity selector |
+| **Week 3** | `./scripts/run-week3.sh` | `.\scripts\run-week3.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
+| **Week 4** | `./scripts/run-week4.sh` | `.\scripts\run-week4.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
+| **Week 5** | `./scripts/run-week5.sh` | `.\scripts\run-week5.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
 
 *(You can also launch any Master GUI Dashboard directly with Java: `java -cp week03-swing-gui Week3Launcher`, `java -cp week04-event-handling Week4Launcher`, or `java -cp week05-advanced-swing Week5Launcher`)*
 

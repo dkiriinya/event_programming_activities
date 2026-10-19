@@ -14,6 +14,60 @@
 
 ---
 
+## 🎓 Instructor & Grader Evaluation Guide
+
+To evaluate all Week 4 activities smoothly without shell errors, use the command matching your terminal:
+
+### 1. Direct Java Dashboard (Zero-Dependency — Any OS & Any Terminal)
+```bash
+# Run from repository root:
+java -cp week04-event-handling Week4Launcher
+```
+*Opens a GUI control center where you can launch individual activities or click **"Launch All 10 Activities Concurrently"** to open all windows at once.*
+
+### 2. Git Bash (`MINGW64`) / Linux / macOS
+> [!WARNING]
+> In Git Bash, **do not** type Windows backslashes like `.\scripts\run-week4.ps1`. In Bash, `\` is an escape character and causes `bash: .scriptsrun-week4.ps1: command not found`. Use the native shell script:
+```bash
+# Launch ALL 10 activities at once:
+./scripts/run-week4.sh --all
+
+# Or open the Master GUI Dashboard:
+./scripts/run-week4.sh --launcher
+
+# Or interactive menu:
+./scripts/run-week4.sh
+```
+
+### 3. Windows PowerShell
+```powershell
+# Launch ALL 10 activities at once:
+.\scripts\run-week4.ps1 -All
+
+# Or open the Master GUI Dashboard:
+.\scripts\run-week4.ps1 -Launcher
+
+# Or interactive menu:
+.\scripts\run-week4.ps1
+```
+
+### Quick Verification Checklist for Graders
+
+| Activity | Main Class | Key Expected Behavior to Verify |
+| :--- | :--- | :--- |
+| **Activity 1** | `FirstButton` | Click button &rarr; Swing dialog appears with greeting. |
+| **Activity 2.1** | `ListenerDemo` | 4 buttons demonstrating Named, Anonymous, Lambda, and Method Reference listeners. |
+| **Activity 2.2** | `EventSourceDemo` | Distinct handlers identified via `e.getSource()` and `e.getActionCommand()`. |
+| **Activity 3.1** | `ItemListenerDemo` | Pizza order form recalculating price in real time as toppings and crust options change. |
+| **Activity 3.2** | `DocumentListenerDemo` | Live character counter updating dynamically as characters are typed or deleted. |
+| **Activity 3.3** | `LiveSearchDemo` | Search box dynamically filtering list of names on each keystroke without pressing Enter. |
+| **Activity 4** | `CounterApp` | Value increments/decrements with step adjustment; bound to keyboard shortcuts (`UP`, `DOWN`, `R`). Limit warning appears at 0 and 20. |
+| **Activity 5** | `RegistrationForm` | Live validation for name, valid email regex, and password length (min 6 chars); radio button selection; reset confirmation. |
+| **Activity 6.1** | `DrawingApp` | Freehand drawing on canvas via mouse drag; color picker buttons (Red, Green, Blue, Black); Clear canvas button. |
+| **Activity 6.2** | `KeyboardMover` | Circle moves inside canvas bounds using Arrow Keys or `WASD`; boundary collision prevention. |
+
+---
+
 ## Learning Outcomes Self-Assessment
 
 ### Learning Outcome 1: Implement `ActionListener` Using Multiple Techniques
