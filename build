@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Quick root build command (similar to 'npm run build')
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+bash "$DIR/scripts/build.sh" "$@"

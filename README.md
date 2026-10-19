@@ -60,6 +60,26 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
 
 ---
 
+## 🔨 Project Build Pipeline (Like `npm run build`)
+
+To ensure everything in the repository compiles cleanly and all 55+ source files and launchers are verified with zero errors, a centralized build pipeline is provided:
+
+| Environment | Command | Clean & Rebuild |
+| :--- | :--- | :--- |
+| **Git Bash / Linux / macOS** | `./build` | `./build --clean` |
+| **Windows CMD / PowerShell** | `.\build.bat` | `.\build.bat --clean` |
+| **AI Agent CLI** | `./agent-cli build` | `./agent-cli build --clean --json` |
+| **Node.js (if NPM is installed)** | `npm run build` | `npm run build:clean` |
+
+**What the build pipeline does:**
+1. Scans all 5 week directories (`Week1_Activity` through `week05-advanced-swing`) and launcher infrastructure.
+2. If `--clean` is passed, deletes old `.class` artifacts.
+3. Compiles all 55 source files simultaneously with `javac`.
+4. Validates that 95+ `.class` bytecode files are generated properly.
+5. Returns exit code `0` on success or non-zero on compiler errors with detailed diagnostics.
+
+---
+
 ## AI Agent CLI (`agent-cli`)
 
 A scriptable, headless, AI-agent-first CLI interface ([`scripts/AgentCLI.java`](scripts/AgentCLI.java)) designed for **LLM coding agents** (Antigravity, Claude Code, GitHub Copilot, Devin), **automated CI/CD pipelines**, and **headless grading bots**.

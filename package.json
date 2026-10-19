@@ -1,0 +1,20 @@
+{
+  "name": "event-driven-programming-java",
+  "version": "1.0.0",
+  "description": "Comprehensive practical activities, guides, and implementations for Event-Driven Programming in Java.",
+  "scripts": {
+    "build": "java -cp scripts AgentCLI build",
+    "build:clean": "java -cp scripts AgentCLI build --clean",
+    "test": "java -cp scripts AgentCLI verify",
+    "grade": "java -cp scripts AgentCLI grade",
+    "info": "java -cp scripts AgentCLI info"
+  },
+  "keywords": [
+    "java",
+    "event-driven-programming",
+    "observer-pattern",
+    "swing-gui"
+  ],
+  "author": "Student & Coursework Developers",
+  "license": "MIT"
+}

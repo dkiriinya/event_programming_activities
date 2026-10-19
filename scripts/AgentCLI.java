@@ -107,6 +107,10 @@ public class AgentCLI {
                 case "inspect":
                     cmdInspect(args, jsonMode);
                     break;
+                case "build":
+                case "compile":
+                    cmdBuild(args, jsonMode);
+                    break;
                 case "verify":
                 case "test":
                     cmdVerify(args, jsonMode);
@@ -140,6 +144,7 @@ public class AgentCLI {
         System.out.println("Usage: java scripts/AgentCLI.java <command> [options]");
         System.out.println();
         System.out.println("Commands for AI Agents & Automated Tooling:");
+        System.out.println("  build [--clean]     Compile all modules across all weeks (like 'npm run build').");
         System.out.println("  info                Display coursework metadata, Java environment, and summary.");
         System.out.println("  list [--week <n>]   List registered activities across weeks (1 to 5).");
         System.out.println("  inspect <id|class>  Deep static analysis of an activity's source code.");
@@ -519,6 +524,174 @@ public class AgentCLI {
             }
         }
         return null;
+    }
+
+    private static void cmdBuild(String[] args, boolean json) throws Exception {
+        long startTime = System.currentTimeMillis();
+        boolean clean = Arrays.asList(args).contains("--clean");
+        Integer filterWeek = getArgInt(args, "--week");
+
+        List<String> moduleDirs = new ArrayList<>();
+        if (filterWeek == null || filterWeek == 1) moduleDirs.add("Week1_Activity");
+        if (filterWeek == null || filterWeek == 2) moduleDirs.add("Week02-observer-pattern");
+        if (filterWeek == null || filterWeek == 3) moduleDirs.add("week03-swing-gui");
+        if (filterWeek == null || filterWeek == 4) moduleDirs.add("week04-event-handling");
+        if (filterWeek == null || filterWeek == 5) moduleDirs.add("week05-advanced-swing");
+        if (filterWeek == null) moduleDirs.add("scripts");
+
+        if (!json) {
+            System.out.println("===============================================================================");
+            System.out.println(" > event-driven-programming-java build");
+            System.out.println(" > Target: " + (filterWeek == null ? "All Modules (Weeks 1 to 5 + Launchers)" : "Week " + filterWeek));
+            if (clean) System.out.println(" > Cleaning existing .class artifacts...");
+            System.out.println("===============================================================================");
+        }
+
+        // Clean if requested
+        int cleanedCount = 0;
+        if (clean) {
+            for (String dir : moduleDirs) {
+                File d = new File(dir);
+                if (d.exists()) {
+                    cleanedCount += cleanClasses(d);
+                }
+            }
+        }
+
+        // Find all .java files
+        Map<String, List<File>> filesByModule = new LinkedHashMap<>();
+        int totalJavaFiles = 0;
+
+        for (String dir : moduleDirs) {
+            File d = new File(dir);
+            if (!d.exists()) continue;
+            List<File> javaFiles = new ArrayList<>();
+            findJavaFiles(d, javaFiles);
+            if (!javaFiles.isEmpty()) {
+                filesByModule.put(dir, javaFiles);
+                totalJavaFiles += javaFiles.size();
+            }
+        }
+
+        if (totalJavaFiles == 0) {
+            throw new IllegalStateException("No Java source files found to build!");
+        }
+
+        // Run javac on all gathered files
+        List<String> javacCmd = new ArrayList<>();
+        javacCmd.add("javac");
+        for (List<File> list : filesByModule.values()) {
+            for (File f : list) {
+                javacCmd.add(f.getPath());
+            }
+        }
+
+        ProcessBuilder pb = new ProcessBuilder(javacCmd);
+        pb.redirectErrorStream(true);
+        Process proc = pb.start();
+
+        StringBuilder compilerOutput = new StringBuilder();
+        try (BufferedReader r = new BufferedReader(new InputStreamReader(proc.getInputStream()))) {
+            String line;
+            while ((line = r.readLine()) != null) {
+                compilerOutput.append(line).append("\n");
+            }
+        }
+        int exitCode = proc.waitFor();
+        long elapsedMs = System.currentTimeMillis() - startTime;
+
+        if (exitCode != 0) {
+            if (json) {
+                System.out.println("{");
+                System.out.println("  \"status\": \"failure\",");
+                System.out.println("  \"exitCode\": " + exitCode + ",");
+                System.out.println("  \"elapsedMs\": " + elapsedMs + ",");
+                System.out.println("  \"error\": \"" + escapeJson(compilerOutput.toString().trim()) + "\"");
+                System.out.println("}");
+            } else {
+                System.err.println("\n\u001B[31m[BUILD FAILED] Compiler returned exit code " + exitCode + ":\u001B[0m");
+                System.err.println(compilerOutput.toString());
+            }
+            System.exit(exitCode);
+        }
+
+        // Verify generated bytecode classes
+        int totalClassesGenerated = 0;
+        for (String dir : moduleDirs) {
+            File d = new File(dir);
+            if (d.exists()) {
+                totalClassesGenerated += countClasses(d);
+            }
+        }
+
+        if (json) {
+            System.out.println("{");
+            System.out.println("  \"status\": \"success\",");
+            System.out.println("  \"exitCode\": 0,");
+            System.out.println("  \"elapsedMs\": " + elapsedMs + ",");
+            System.out.println("  \"sourcesCompiled\": " + totalJavaFiles + ",");
+            System.out.println("  \"classesGenerated\": " + totalClassesGenerated + ",");
+            System.out.println("  \"cleaned\": " + cleanedCount + ",");
+            System.out.println("  \"modules\": {");
+            int mi = 0;
+            for (Map.Entry<String, List<File>> entry : filesByModule.entrySet()) {
+                System.out.print("    \"" + entry.getKey() + "\": " + entry.getValue().size() + (mi++ < filesByModule.size() - 1 ? "," : ""));
+                System.out.println();
+            }
+            System.out.println("  }");
+            System.out.println("}");
+        } else {
+            for (Map.Entry<String, List<File>> entry : filesByModule.entrySet()) {
+                System.out.printf("  \u001B[32m✔\u001B[0m %-30s (%d source files)%n", entry.getKey(), entry.getValue().size());
+            }
+            System.out.println("-------------------------------------------------------------------------------");
+            System.out.printf("\u001B[32m✨ Build succeeded in %.2fs!\u001B[0m%n", elapsedMs / 1000.0);
+            System.out.printf("   Total Java sources: %d%n", totalJavaFiles);
+            System.out.printf("   Output bytecode:    %d .class files%n", totalClassesGenerated);
+            if (clean) System.out.printf("   Cleaned artifacts:  %d files%n", cleanedCount);
+            System.out.println("   Exit code:          0 (PASS)");
+            System.out.println("===============================================================================");
+        }
+    }
+
+    private static void findJavaFiles(File dir, List<File> result) {
+        File[] files = dir.listFiles();
+        if (files == null) return;
+        for (File f : files) {
+            if (f.isDirectory()) {
+                findJavaFiles(f, result);
+            } else if (f.getName().endsWith(".java")) {
+                result.add(f);
+            }
+        }
+    }
+
+    private static int cleanClasses(File dir) {
+        int count = 0;
+        File[] files = dir.listFiles();
+        if (files == null) return 0;
+        for (File f : files) {
+            if (f.isDirectory()) {
+                count += cleanClasses(f);
+            } else if (f.getName().endsWith(".class")) {
+                if (f.delete()) count++;
+            }
+        }
+        return count;
+    }
+
+    private static int countClasses(File dir) {
+        int count = 0;
+        File[] files = dir.listFiles();
+        if (files == null) return 0;
+        for (File f : files) {
+            if (f.isDirectory()) {
+                count += countClasses(f);
+            } else if (f.getName().endsWith(".class")) {
+                count++;
+            }
+        }
+        return count;
     }
 
     private static String escapeJson(String s) {
