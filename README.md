@@ -10,6 +10,7 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
 - [Week 1 Self-Paced Practical Activities](documentation/Week%201%20Self%20paced%20Activity.md)
 - [Week 3 Self-Paced GUI Application Guide](documentation/Week%203%20Self%20paced%20Activity.md)
 - [Week 4 Interactive Swing Applications Guide](documentation/Week%204%20Self%20paced%20Activity.md)
+- [Week 5 Advanced Swing Components Guide](documentation/Week%205%20Advanced%20Swing%20Components.md)
 
 ---
 
@@ -291,6 +292,52 @@ Low-level input processing using `MouseAdapter` and `KeyAdapter`.
 
 ---
 
+### Week 5: Advanced Swing Components & Multi-Pane Applications (`week05-advanced-swing/`)
+
+Covers advanced data components (`JList`, `JTable`, `JTree`, `JTabbedPane`), custom cell renderers, menus, toolbars, file choosers, modal dialogs, and multi-pane split architectures. Detailed assessment is in [week05-advanced-swing/SelfAssessment.md](week05-advanced-swing/SelfAssessment.md).
+
+#### Activity 1: JList and Custom Renderers
+Contact list featuring a custom `ListCellRenderer` with status dot icons (Online, Away, Offline) and selection state listener.
+
+```powershell
+javac week05-advanced-swing/activity1-jlist-renderer/ContactListDemo.java
+java -cp week05-advanced-swing/activity1-jlist-renderer ContactListDemo
+```
+
+#### Activity 2: JTable Tabular Data Display
+Student database table with `DefaultTableModel`, column-level editability constraints, custom GPA cell rendering (< 3.0 in red), and CRUD actions (Add, Delete Selected, Clear All).
+
+```powershell
+javac week05-advanced-swing/activity2-jtable/StudentTableDemo.java
+java -cp week05-advanced-swing/activity2-jtable StudentTableDemo
+```
+
+#### Activity 3: JTree and JTabbedPane
+Explorer interface combining hierarchical tree navigation (`JTree`), tabbed settings panels (`JTabbedPane`), and a resizable horizontal split layout (`JSplitPane`).
+
+```powershell
+javac week05-advanced-swing/activity3-jtree-tabs/FileExplorerDemo.java
+java -cp week05-advanced-swing/activity3-jtree-tabs FileExplorerDemo
+```
+
+#### Activity 4: Menus, Toolbars, and Dialogs (MiniEditor)
+Desktop text editor featuring application menus (`JMenuBar`, `JMenu`, `JMenuItem`), quick-access toolbar (`JToolBar`), real-time word counting, and native file operations via `JFileChooser`.
+
+```powershell
+javac week05-advanced-swing/activity4-menus-dialogs/MiniEditor.java
+java -cp week05-advanced-swing/activity4-menus-dialogs MiniEditor
+```
+
+#### Activity 5: Interactive File Manager Capstone
+Full desktop file manager integrating `JTree` directory traversal, `JTable` file details, `JSplitPane`, toolbar navigation (Home, Up, Refresh), and double-click folder drilling.
+
+```powershell
+javac week05-advanced-swing/activity5-capstone-file-manager/FileManager.java
+java -cp week05-advanced-swing/activity5-capstone-file-manager FileManager
+```
+
+---
+
 ## Batch Compilation Commands
 
 To compile all `.java` source files in the entire project at once:
@@ -298,6 +345,9 @@ To compile all `.java` source files in the entire project at once:
 ```powershell
 # Compile all source files across all weeks at once (PowerShell):
 javac (Get-ChildItem -Filter *.java -Recurse | Select-Object -ExpandProperty FullName)
+
+# Or compile Week 5 specifically:
+javac (Get-ChildItem -Path week05-advanced-swing -Filter *.java -Recurse | Select-Object -ExpandProperty FullName)
 
 # Or compile Week 4 specifically:
 javac (Get-ChildItem -Path week04-event-handling -Filter *.java -Recurse | Select-Object -ExpandProperty FullName)
