@@ -9,6 +9,7 @@ Hands-on practical activities, guides, and implementations for Event-Driven Prog
 Comprehensive self-paced student guides and theory notes are located in the [`documentation/`](documentation/) directory:
 - [Week 1 Self-Paced Practical Activities](documentation/Week%201%20Self%20paced%20Activity.md)
 - [Week 3 Self-Paced GUI Application Guide](documentation/Week%203%20Self%20paced%20Activity.md)
+- [Week 4 Interactive Swing Applications Guide](documentation/Week%204%20Self%20paced%20Activity.md)
 
 ---
 
@@ -213,17 +214,91 @@ java -cp week03-swing-gui/activity5-complete-mockup StudentPortal
 
 ---
 
+### Week 4: Event Handling in Swing (`week04-event-handling/`)
+
+Covers listener styles (`ActionListener`, `ItemListener`, `DocumentListener`), event source inspection, keyboard shortcuts (`KeyStroke` & `ActionMap`), comprehensive form validation, and low-level mouse/keyboard adapters. Detailed assessment is in [week04-event-handling/SelfAssessment.md](week04-event-handling/SelfAssessment.md).
+
+#### Activity 1: ActionListener Basics
+Simple button interaction with popup dialog via lambda `ActionListener`.
+
+```powershell
+javac week04-event-handling/activity1-actionlistener-basics/FirstButton.java
+java -cp week04-event-handling/activity1-actionlistener-basics FirstButton
+```
+
+#### Activity 2: Listener Techniques & Event Sources
+Comparing named class, anonymous inner class, lambda, and method reference, plus detecting components with `e.getSource()`.
+
+- **Subactivity 2.1: Listener Implementation Techniques**
+  ```powershell
+  javac week04-event-handling/activity2-listener-techniques/ListenerDemo.java
+  java -cp week04-event-handling/activity2-listener-techniques ListenerDemo
+  ```
+- **Subactivity 2.2: Event Source Identification**
+  ```powershell
+  javac week04-event-handling/activity2-listener-techniques/EventSourceDemo.java
+  java -cp week04-event-handling/activity2-listener-techniques EventSourceDemo
+  ```
+
+#### Activity 3: Item and Document Listeners
+Handling state toggles in checkboxes/radio buttons and real-time keystroke tracking in text fields.
+
+- **Subactivity 3.1: Pizza Order Form (`ItemListener`)**
+  ```powershell
+  javac week04-event-handling/activity3-item-and-document-listeners/ItemListenerDemo.java
+  java -cp week04-event-handling/activity3-item-and-document-listeners ItemListenerDemo
+  ```
+- **Subactivity 3.2: Live Character Counter (`DocumentListener`)**
+  ```powershell
+  javac week04-event-handling/activity3-item-and-document-listeners/DocumentListenerDemo.java
+  java -cp week04-event-handling/activity3-item-and-document-listeners DocumentListenerDemo
+  ```
+- **Subactivity 3.3: Live Search Filtering (`DocumentListener`)**
+  ```powershell
+  javac week04-event-handling/activity3-item-and-document-listeners/LiveSearchDemo.java
+  java -cp week04-event-handling/activity3-item-and-document-listeners LiveSearchDemo
+  ```
+
+#### Activity 4: Counter Application with Keyboard Shortcuts
+State-managed counter with visual threshold alerts (0–20 limits) and window-level keyboard bindings (`UP`, `DOWN`, `R`).
+
+```powershell
+javac week04-event-handling/activity4-counter-app/CounterApp.java
+java -cp week04-event-handling/activity4-counter-app CounterApp
+```
+
+#### Activity 5: Interactive Registration Form
+Multi-field form with field validation (name, email format, password length), selection groups, reset logic, and confirmation dialogs.
+
+```powershell
+javac week04-event-handling/activity5-interactive-form/RegistrationForm.java
+java -cp week04-event-handling/activity5-interactive-form RegistrationForm
+```
+
+#### Activity 6: Mouse and Key Event Handling
+Low-level input processing using `MouseAdapter` and `KeyAdapter`.
+
+- **Subactivity 6.1: Freehand Drawing Canvas (`MouseAdapter`)**
+  ```powershell
+  javac week04-event-handling/activity6-mouse-and-key/DrawingApp.java
+  java -cp week04-event-handling/activity6-mouse-and-key DrawingApp
+  ```
+- **Subactivity 6.2: Ball Movement with Arrow Keys (`KeyAdapter`)**
+  ```powershell
+  javac week04-event-handling/activity6-mouse-and-key/KeyboardMover.java
+  java -cp week04-event-handling/activity6-mouse-and-key KeyboardMover
+  ```
+
+---
+
 ## Batch Compilation Commands
 
 To compile all `.java` source files in the entire project at once:
 
 ```powershell
-# Compile Week 1
-javac Week1_Activity/*.java Week1_Activity/BugFixChallenge/*.java
+# Compile all source files across all weeks at once (PowerShell):
+javac (Get-ChildItem -Filter *.java -Recurse | Select-Object -ExpandProperty FullName)
 
-# Compile Week 2
-javac Week02-observer-pattern/*/*.java
-
-# Compile Week 3
-javac week03-swing-gui/*/*.java
+# Or compile Week 4 specifically:
+javac (Get-ChildItem -Path week04-event-handling -Filter *.java -Recurse | Select-Object -ExpandProperty FullName)
 ```
