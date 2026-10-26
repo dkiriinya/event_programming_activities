@@ -57,3 +57,10 @@ $RECYCLE.BIN/
 *.tmp
 *.swp
 *~
+
+# Maven and NetBeans output
+week06-javafx/target/
+week06-javafx/nbproject/private/
+week07-javafx-events/target/
+week07-javafx-events/nbproject/private/
+

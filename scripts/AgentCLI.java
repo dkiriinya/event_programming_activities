@@ -85,6 +85,18 @@ public class AgentCLI {
         REGISTRY.add(new ActivityRecord("w5-file-explorer", 5, "JTree & JTabbedPane Document Viewer", "week05-advanced-swing/activity3-jtree-tabs", "FileExplorerDemo", "FileExplorerDemo.java", true, "JTree hierarchy linked with JTabbedPane split views", "JTree", "JTabbedPane", "JSplitPane"));
         REGISTRY.add(new ActivityRecord("w5-mini-editor", 5, "Menu Bars, Toolbars & Dialogs", "week05-advanced-swing/activity4-menus-dialogs", "MiniEditor", "MiniEditor.java", true, "JMenuBar, JToolBar, accelerators, and JFileChooser", "JMenuBar", "JMenuItem", "JFileChooser"));
         REGISTRY.add(new ActivityRecord("w5-file-manager", 5, "Capstone Desktop File Manager", "week05-advanced-swing/activity5-capstone-file-manager", "FileManager", "FileManager.java", true, "Comprehensive dual-pane file manager application", "JTree", "JTable", "JSplitPane", "JToolBar"));
+
+        // Week 6
+        REGISTRY.add(new ActivityRecord("w6-hello-world", 6, "First JavaFX Window", "week06-javafx/src/main/java/programmaticdemo", "Main", "Main.java", true, "Stage, Scene, Node hierarchy & JavaFX Application Thread", "Application", "Stage", "Scene", "setOnAction"));
+        REGISTRY.add(new ActivityRecord("w6-layouts", 6, "JavaFX Layout Panes", "week06-javafx/src/main/java/programmaticdemo", "LayoutDemo", "LayoutDemo.java", true, "HBox, VBox, GridPane, BorderPane responsive layouts", "HBox", "VBox", "GridPane", "BorderPane"));
+        REGISTRY.add(new ActivityRecord("w6-fxml-login", 6, "FXML & Controller Wiring", "week06-javafx/src/main/java/programmaticdemo", "FXMLApp", "FXMLApp.java", true, "FXML separation of concerns, @FXML injection & credential check", "FXMLLoader", "FXML", "LoginController", "handleLoginButtonAction"));
+        REGISTRY.add(new ActivityRecord("w6-dashboard", 6, "Capstone SaaS Dashboard", "week06-javafx/src/main/java/programmaticdemo", "DashboardApp", "DashboardApp.java", true, "Production SaaS dashboard with metric cards and responsive panes", "BorderPane", "createCard", "Font"));
+
+        // Week 7
+        REGISTRY.add(new ActivityRecord("w7-propagation", 7, "Event Propagation (Filters vs Handlers)", "week07-javafx-events/src/main/java/com/example", "EventPropagationDemo", "EventPropagationDemo.java", true, "Capturing vs bubbling phases with addEventFilter and addEventHandler", "addEventFilter", "addEventHandler", "setOnMouseClicked"));
+        REGISTRY.add(new ActivityRecord("w7-mouse-key", 7, "Mouse and Key Events", "week07-javafx-events/src/main/java/com/example", "MouseKeyDemo", "MouseKeyDemo.java", true, "Coordinate tracking and arrow key circle navigation", "setOnMouseMoved", "setOnKeyPressed", "KeyCode"));
+        REGISTRY.add(new ActivityRecord("w7-drag-drop", 7, "Drag and Drop Interaction", "week07-javafx-events/src/main/java/com/example", "DragDropDemo", "DragDropDemo.java", true, "Dragboard, ClipboardContent, TransferMode, and visual feedback", "startDragAndDrop", "setOnDragOver", "setOnDragDropped"));
+        REGISTRY.add(new ActivityRecord("w7-custom-events", 7, "Custom LoginSuccessEvent", "week07-javafx-events/src/main/java/com/example", "CustomEventDemo", "CustomEventDemo.java", true, "Decoupled component communication via custom Event and EventType", "Event", "EventType", "fireEvent", "addEventHandler"));
     }
 
     public static void main(String[] args) {
@@ -173,7 +185,7 @@ public class AgentCLI {
         if (json) {
             System.out.println("{");
             System.out.println("  \"coursework\": \"Event-Driven Programming in Java\",");
-            System.out.println("  \"totalWeeks\": 5,");
+            System.out.println("  \"totalWeeks\": 7,");
             System.out.println("  \"totalActivities\": " + totalActivities + ",");
             System.out.println("  \"javaVersion\": \"" + escapeJson(javaVer) + "\",");
             System.out.println("  \"javaHome\": \"" + escapeJson(javaHome) + "\",");
@@ -182,7 +194,7 @@ public class AgentCLI {
             System.out.println("}");
         } else {
             System.out.println("Coursework: Event-Driven Programming in Java");
-            System.out.println("Total Modules: 5 Weeks (" + totalActivities + " Registered Activities)");
+            System.out.println("Total Modules: Weeks 1–5, 7 (" + totalActivities + " Registered Activities)");
             System.out.println("Java Runtime: " + javaVer + " (" + javaHome + ")");
             System.out.println("Host OS:      " + osName);
             System.out.println("Capabilities: Headless Verification, Static Code Audit, Automated Grading Rubric");
@@ -308,6 +320,13 @@ public class AgentCLI {
 
             File src = new File(r.folder, r.sourceFile);
             File cls = new File(r.folder, r.className + ".class");
+            if (!cls.exists() && r.week == 6) {
+                File targetCls = new File("week06-javafx/target/classes/programmaticdemo", r.className + ".class");
+                if (targetCls.exists()) cls = targetCls;
+            } else if (!cls.exists() && r.week == 7) {
+                File targetCls = new File("week07-javafx-events/target/classes/com/example", r.className + ".class");
+                if (targetCls.exists()) cls = targetCls;
+            }
 
             boolean srcExists = src.exists();
             boolean clsExists = cls.exists();
@@ -381,6 +400,13 @@ public class AgentCLI {
         for (ActivityRecord act : weekActs) {
             File src = new File(act.folder, act.sourceFile);
             File cls = new File(act.folder, act.className + ".class");
+            if (!cls.exists() && act.week == 6) {
+                File targetCls = new File("week06-javafx/target/classes/programmaticdemo", act.className + ".class");
+                if (targetCls.exists()) cls = targetCls;
+            } else if (!cls.exists() && act.week == 7) {
+                File targetCls = new File("week07-javafx-events/target/classes/com/example", act.className + ".class");
+                if (targetCls.exists()) cls = targetCls;
+            }
 
             if (src.exists() && cls.exists()) {
                 score += pointsPerAct;
@@ -398,7 +424,7 @@ public class AgentCLI {
             File src = new File(act.folder, act.sourceFile);
             if (src.exists()) {
                 String c = Files.readString(src.toPath());
-                if (c.contains("SwingUtilities.invokeLater") || c.contains("invokeLater")) {
+                if (c.contains("SwingUtilities.invokeLater") || c.contains("invokeLater") || c.contains("Application") || c.contains("Platform.runLater")) {
                     edtSafeCount++;
                 }
             }
@@ -406,7 +432,7 @@ public class AgentCLI {
         if (guiCount > 0) {
             double edtRatio = (double) edtSafeCount / guiCount;
             score += edtRatio * 15.0;
-            if (edtRatio < 1.0) notes.add("EDT Safety: " + edtSafeCount + "/" + guiCount + " GUI activities explicitly invokeLater.");
+            if (edtRatio < 1.0) notes.add("Thread Safety: " + edtSafeCount + "/" + guiCount + " GUI activities explicitly thread-safe.");
         } else {
             score += 15.0;
         }
@@ -417,8 +443,10 @@ public class AgentCLI {
         File sa3 = new File("Week" + filterWeek + "_Activity", "SelfAssessment.md");
         File sa4 = new File("week0" + filterWeek + "-advanced-swing", "SelfAssessment.md");
         File sa5 = new File("Week0" + filterWeek + "-observer-pattern", "SelfAssessment.md");
+        File sa6 = new File("week06-javafx", "SelfAssessment.md");
+        File sa7 = new File("week0" + filterWeek + "-javafx-events", "SelfAssessment.md");
 
-        if (sa1.exists() || sa2.exists() || sa3.exists() || sa4.exists() || sa5.exists()) {
+        if (sa1.exists() || sa2.exists() || sa3.exists() || sa4.exists() || sa5.exists() || sa6.exists() || sa7.exists()) {
             score += 15.0;
         } else {
             notes.add("SelfAssessment.md not found for week " + filterWeek);
@@ -475,10 +503,47 @@ public class AgentCLI {
         cmd.add("java");
         if (headless) {
             cmd.add("-Djava.awt.headless=true");
+            cmd.add("-Dtestfx.robot=glass");
+            cmd.add("-Dglass.platform=Monocle");
+            cmd.add("-Dmonocle.platform=Headless");
+            cmd.add("-Dprism.order=sw");
         }
-        cmd.add("-cp");
-        cmd.add(new File(act.folder).getAbsolutePath());
-        cmd.add(act.className);
+        String jfxPath = getOpenJFXModulePath();
+        if (act.week == 6) {
+            if (jfxPath != null) {
+                cmd.add("--module-path");
+                cmd.add(jfxPath);
+                cmd.add("--add-modules");
+                cmd.add("javafx.controls,javafx.fxml");
+            }
+            cmd.add("-cp");
+            File targetClasses = new File("week06-javafx/target/classes");
+            if (targetClasses.exists()) {
+                cmd.add(targetClasses.getAbsolutePath());
+            } else {
+                cmd.add(new File(act.folder).getAbsolutePath());
+            }
+            cmd.add("programmaticdemo." + act.className);
+        } else if (act.week == 7) {
+            if (jfxPath != null) {
+                cmd.add("--module-path");
+                cmd.add(jfxPath);
+                cmd.add("--add-modules");
+                cmd.add("javafx.controls,javafx.fxml");
+            }
+            cmd.add("-cp");
+            File targetClasses = new File("week07-javafx-events/target/classes");
+            if (targetClasses.exists()) {
+                cmd.add(targetClasses.getAbsolutePath());
+            } else {
+                cmd.add(new File(act.folder).getAbsolutePath());
+            }
+            cmd.add("com.example." + act.className);
+        } else {
+            cmd.add("-cp");
+            cmd.add(new File(act.folder).getAbsolutePath());
+            cmd.add(act.className);
+        }
 
         ProcessBuilder pb = new ProcessBuilder(cmd);
         pb.redirectErrorStream(true);
@@ -537,12 +602,14 @@ public class AgentCLI {
         if (filterWeek == null || filterWeek == 3) moduleDirs.add("week03-swing-gui");
         if (filterWeek == null || filterWeek == 4) moduleDirs.add("week04-event-handling");
         if (filterWeek == null || filterWeek == 5) moduleDirs.add("week05-advanced-swing");
+        if (filterWeek == null || filterWeek == 6) moduleDirs.add("week06-javafx");
+        if (filterWeek == null || filterWeek == 7) moduleDirs.add("week07-javafx-events/src/main/java");
         if (filterWeek == null) moduleDirs.add("scripts");
 
         if (!json) {
             System.out.println("===============================================================================");
             System.out.println(" > event-driven-programming-java build");
-            System.out.println(" > Target: " + (filterWeek == null ? "All Modules (Weeks 1 to 5 + Launchers)" : "Week " + filterWeek));
+            System.out.println(" > Target: " + (filterWeek == null ? "All Modules (Weeks 1 to 6, 7 + Launchers)" : "Week " + filterWeek));
             if (clean) System.out.println(" > Cleaning existing .class artifacts...");
             System.out.println("===============================================================================");
         }
@@ -580,6 +647,13 @@ public class AgentCLI {
         // Run javac on all gathered files
         List<String> javacCmd = new ArrayList<>();
         javacCmd.add("javac");
+        String jfxPath = getOpenJFXModulePath();
+        if (jfxPath != null && (filterWeek == null || filterWeek == 6 || filterWeek == 7)) {
+            javacCmd.add("--module-path");
+            javacCmd.add(jfxPath);
+            javacCmd.add("--add-modules");
+            javacCmd.add("javafx.controls,javafx.fxml");
+        }
         for (List<File> list : filesByModule.values()) {
             for (File f : list) {
                 javacCmd.add(f.getPath());
@@ -659,6 +733,7 @@ public class AgentCLI {
         if (files == null) return;
         for (File f : files) {
             if (f.isDirectory()) {
+                if (f.getName().equals(".mvn") || f.getName().equals("target")) continue;
                 findJavaFiles(f, result);
             } else if (f.getName().endsWith(".java")) {
                 result.add(f);
@@ -672,6 +747,7 @@ public class AgentCLI {
         if (files == null) return 0;
         for (File f : files) {
             if (f.isDirectory()) {
+                if (f.getName().equals(".mvn") || f.getName().equals("lib") || f.getName().equals("target")) continue;
                 count += cleanClasses(f);
             } else if (f.getName().endsWith(".class")) {
                 if (f.delete()) count++;
@@ -686,12 +762,45 @@ public class AgentCLI {
         if (files == null) return 0;
         for (File f : files) {
             if (f.isDirectory()) {
+                if (f.getName().equals(".mvn") || f.getName().equals("lib")) continue;
                 count += countClasses(f);
             } else if (f.getName().endsWith(".class")) {
                 count++;
             }
         }
         return count;
+    }
+
+    private static String getOpenJFXModulePath() {
+        boolean isWin = System.getProperty("os.name", "").toLowerCase().contains("win");
+        File localLib = new File(isWin ? "week06-javafx/lib/win" : "week06-javafx/lib/linux");
+        if (localLib.exists()) {
+            return localLib.getAbsolutePath();
+        }
+        String userHome = System.getProperty("user.home");
+        File jfxDir = new File(userHome, ".m2/repository/org/openjfx");
+        if (!jfxDir.exists()) return null;
+        List<File> jars = new ArrayList<>();
+        findJarFiles(jfxDir, jars);
+        if (jars.isEmpty()) return null;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < jars.size(); i++) {
+            if (i > 0) sb.append(File.pathSeparator);
+            sb.append(jars.get(i).getAbsolutePath());
+        }
+        return sb.toString();
+    }
+
+    private static void findJarFiles(File dir, List<File> result) {
+        File[] files = dir.listFiles();
+        if (files == null) return;
+        for (File f : files) {
+            if (f.isDirectory()) {
+                findJarFiles(f, result);
+            } else if (f.getName().endsWith(".jar") && !f.getName().endsWith("-sources.jar") && !f.getName().endsWith("-javadoc.jar")) {
+                result.add(f);
+            }
+        }
     }
 
     private static String escapeJson(String s) {

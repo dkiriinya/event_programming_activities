@@ -12,6 +12,8 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
 - [Week 3 Self-Paced GUI Application Guide](documentation/Week%203%20Self%20paced%20Activity.md)
 - [Week 4 Interactive Swing Applications Guide](documentation/Week%204%20Self%20paced%20Activity.md)
 - [Week 5 Advanced Swing Components Guide](documentation/Week%205%20Advanced%20Swing%20Components.md)
+- [Week 6 Introduction to Modern JavaFX Guide](documentation/Week%206%20Introduction%20to%20Modern%20JavaFX.md)
+- [Week 7 Self-Paced Event Handling in JavaFX](documentation/Week%207%20Self%20Paced%20Guide_Event%20Handling%20in%20JavaFX.md)
 
 ---
 
@@ -501,6 +503,110 @@ java -cp week05-advanced-swing/activity5-capstone-file-manager FileManager
 
 ---
 
+## ⚡ Week 6: Introduction to Modern JavaFX (NetBeans Edition)
+
+A complete modern JavaFX Maven project ([`week06-javafx/`](week06-javafx/)) demonstrating core JavaFX architecture (`Stage`, `Scene`, `Node`), programmatic layouts (`HBox`, `VBox`, `GridPane`, `BorderPane`), declarative FXML visual UI design using Scene Builder, Model-View-Controller (MVC) wiring with `@FXML` dependency injection, and a production-grade Capstone SaaS Dashboard.
+
+### Quick Master Runners
+- **Run the Master GUI Launcher (runs all Week 6 activities from one dashboard):**
+  ```powershell
+  java -cp week06-javafx Week6Launcher
+  ```
+- **Run with PowerShell script in `scripts/` (interactive menu or launch all at once):**
+  ```powershell
+  .\scripts\run-week6.ps1           # Interactive menu
+  .\scripts\run-week6.ps1 -All      # Launches all activities simultaneously
+  .\scripts\run-week6.ps1 -Launcher # Opens Master GUI Launcher
+  ```
+- **Run with Bash script in `scripts/` (Git Bash & Linux):**
+  ```bash
+  ./scripts/run-week6.sh --launcher
+  ./scripts/run-week6.sh --all
+  ```
+
+### Activities & Implementations
+
+#### Activity 1: Your First JavaFX Window (Programmatic)
+Constructs a JavaFX application entirely in code to understand the core architecture: `Stage` (window), `Scene` (container), and `Node` (components), running on the dedicated **`JavaFX Application Thread`**.
+- Source: [`week06-javafx/src/main/java/programmaticdemo/Main.java`](week06-javafx/src/main/java/programmaticdemo/Main.java)
+```powershell
+# Maven run:
+cd week06-javafx && .\mvnw.cmd javafx:run -Djavafx.mainClass=programmaticdemo.Main
+# Direct run:
+java --module-path week06-javafx/lib/win --add-modules javafx.controls,javafx.fxml -cp week06-javafx/target/classes programmaticdemo.Main
+```
+
+#### Activity 2: JavaFX Layouts (Programmatic)
+Arranges UI components using JavaFX layout panes: a dark `HBox` top bar, a vertical `VBox` sidebar, and a 3×3 `GridPane` of interactive buttons, all assembled inside a master `BorderPane`.
+- Source: [`week06-javafx/src/main/java/programmaticdemo/LayoutDemo.java`](week06-javafx/src/main/java/programmaticdemo/LayoutDemo.java)
+```powershell
+cd week06-javafx && .\mvnw.cmd javafx:run -Djavafx.mainClass=programmaticdemo.LayoutDemo
+```
+
+#### Activity 3: Visual UI Design with Scene Builder & FXML
+Declarative XML-based UI layout built with Scene Builder. Defines a centered `VBox` containing header label, `TextField` (`usernameField`), `PasswordField` (`passwordField`), and `Button` (`loginButton`).
+- FXML View: [`week06-javafx/src/main/resources/programmaticdemo/login.fxml`](week06-javafx/src/main/resources/programmaticdemo/login.fxml)
+
+#### Activity 4: Wiring FXML with a Controller
+Connects the visual FXML view to Java logic following the Model-View-Controller (MVC) pattern. Leverages `@FXML` field injection and `#handleLoginButtonAction` to validate credentials (`admin` / `password123`) and log thread safety details.
+- Controller: [`week06-javafx/src/main/java/programmaticdemo/LoginController.java`](week06-javafx/src/main/java/programmaticdemo/LoginController.java)
+- Application Entry: [`week06-javafx/src/main/java/programmaticdemo/FXMLApp.java`](week06-javafx/src/main/java/programmaticdemo/FXMLApp.java)
+```powershell
+cd week06-javafx && .\mvnw.cmd javafx:run -Djavafx.mainClass=programmaticdemo.FXMLApp
+```
+
+#### Activity 5: Capstone — Modern SaaS Dashboard
+Simulates an enterprise SaaS application (AWS, Stripe, Azure) layout featuring a dark top bar (`#2c3e50`), navigation sidebar (`#ecf0f1`), and a responsive center workspace showcasing modular color-coded metric cards for Revenue, Users, and Orders.
+- Source: [`week06-javafx/src/main/java/programmaticdemo/DashboardApp.java`](week06-javafx/src/main/java/programmaticdemo/DashboardApp.java)
+```powershell
+cd week06-javafx && .\mvnw.cmd javafx:run -Djavafx.mainClass=programmaticdemo.DashboardApp
+```
+
+---
+
+## 🎨 Week 7: Event Handling in JavaFX
+
+A complete modern JavaFX Maven project ([`week07-javafx-events/`](week07-javafx-events/)) demonstrating event filters, bubbling event handlers, real-time mouse coordinate tracking, focus management, keyboard arrow motion, interactive drag-and-drop transfer pipelines, and decoupled custom events.
+
+### Activities & Implementations
+
+#### Activity 1: Event Propagation (Filters vs. Handlers)
+Demonstrates the capturing phase (top-down event filter on root node) vs. bubbling phase (bottom-up event handler on root and target button), including event consumption via `e.consume()`.
+- Source: [`week07-javafx-events/src/main/java/com/example/EventPropagationDemo.java`](week07-javafx-events/src/main/java/com/example/EventPropagationDemo.java)
+```bash
+mvn -f week07-javafx-events/pom.xml javafx:run -Djavafx.mainClass=com.example.EventPropagationDemo
+```
+
+#### Activity 2: Mouse and Key Events
+Real-time tracking of mouse pointer X/Y coordinates via `setOnMouseMoved()` and keyboard-driven character movement via `setOnKeyPressed()`, `KeyCode`, and boundary collision clamping.
+- Source: [`week07-javafx-events/src/main/java/com/example/MouseKeyDemo.java`](week07-javafx-events/src/main/java/com/example/MouseKeyDemo.java)
+```bash
+mvn -f week07-javafx-events/pom.xml javafx:run -Djavafx.mainClass=com.example.MouseKeyDemo
+```
+
+#### Activity 3: Drag and Drop Interaction
+Complete interactive drag-and-drop workflow: drag initiation from source label (`setOnDragDetected`, `TransferMode.MOVE`, `ClipboardContent`), hover detection and visual drop target feedback (`setOnDragOver`, `setOnDragEntered`, `setOnDragExited`), and completion (`setOnDragDropped`, `setDropCompleted`).
+- Source: [`week07-javafx-events/src/main/java/com/example/DragDropDemo.java`](week07-javafx-events/src/main/java/com/example/DragDropDemo.java)
+```bash
+mvn -f week07-javafx-events/pom.xml javafx:run -Djavafx.mainClass=com.example.DragDropDemo
+```
+
+#### Activity 4: Custom Events & Loose Coupling
+Decoupled enterprise architecture using a custom typed event `LoginSuccessEvent` extending `javafx.event.Event`, fired via `root.fireEvent()` and handled independently by decoupled consumers via `root.addEventHandler()`.
+- Source: [`week07-javafx-events/src/main/java/com/example/LoginSuccessEvent.java`](week07-javafx-events/src/main/java/com/example/LoginSuccessEvent.java) & [`week07-javafx-events/src/main/java/com/example/CustomEventDemo.java`](week07-javafx-events/src/main/java/com/example/CustomEventDemo.java)
+```bash
+mvn -f week07-javafx-events/pom.xml javafx:run -Djavafx.mainClass=com.example.CustomEventDemo
+```
+
+#### Master JavaFX Dashboard
+Single-click graphical dashboard with cards for each activity and concurrent multi-window launching.
+- Source: [`week07-javafx-events/src/main/java/com/example/Week7Launcher.java`](week07-javafx-events/src/main/java/com/example/Week7Launcher.java)
+```bash
+mvn -f week07-javafx-events/pom.xml javafx:run
+```
+
+---
+
 ## Batch Compilation Commands
 
 To compile all `.java` source files in the entire project at once:
@@ -524,19 +630,23 @@ To keep the repository clean, structured, and easy to run across all modules, de
 
 ### 1. Organized Scripts Directory (`scripts/`)
 All runner scripts are consolidated in [`scripts/`](scripts/) to prevent root-directory clutter:
-- **[`scripts/run-all.ps1`](scripts/run-all.ps1)**: Interactive hub dispatcher to explore or launch any activity from Week 1 through Week 5.
+- **[`scripts/run-all.ps1`](scripts/run-all.ps1)**: Interactive hub dispatcher to explore or launch any activity from Week 1 through Week 7.
 - **[`scripts/run-week1.ps1`](scripts/run-week1.ps1)**: CLI & GUI launcher with interactive menu, `-All` flag, and `-Activity <id>`.
 - **[`scripts/run-week2.ps1`](scripts/run-week2.ps1)**: Observer pattern test runner executing console simulations in non-closing windows.
 - **[`scripts/run-week3.ps1`](scripts/run-week3.ps1)**: Controls all 9 layout and EDT activities with `-Launcher` GUI shortcut.
 - **[`scripts/run-week4.ps1`](scripts/run-week4.ps1)**: Controls all 10 event-handling activities with `-Launcher` GUI shortcut.
 - **[`scripts/run-week5.ps1`](scripts/run-week5.ps1)**: Controls all 5 advanced Swing activities with `-Launcher` GUI shortcut.
+- **[`scripts/run-week6.ps1`](scripts/run-week6.ps1)**: Controls all 5 modern JavaFX activities with `-Launcher` GUI shortcut.
+- **[`scripts/run-week7.ps1`](scripts/run-week7.ps1)**: Controls all 4 JavaFX event activities with `-Launcher` GUI shortcut.
 
 ### 2. Standalone Master GUI Dashboards
-Built for Week 2, Week 3, Week 4, and Week 5, these dashboards allow single-click execution or concurrent launching of every activity:
+Built for Week 2, Week 3, Week 4, Week 5, Week 6, and Week 7, these dashboards allow single-click execution or concurrent launching of every activity:
 - **[`Week02-observer-pattern/Week2Launcher.java`](Week02-observer-pattern/Week2Launcher.java)** (Interactive dashboard with live console output stream)
 - **[`week03-swing-gui/Week3Launcher.java`](week03-swing-gui/Week3Launcher.java)**
 - **[`week04-event-handling/Week4Launcher.java`](week04-event-handling/Week4Launcher.java)**
 - **[`week05-advanced-swing/Week5Launcher.java`](week05-advanced-swing/Week5Launcher.java)**
+- **[`week06-javafx/Week6Launcher.java`](week06-javafx/Week6Launcher.java)**
+- **[`week07-javafx-events/src/main/java/com/example/Week7Launcher.java`](week07-javafx-events/src/main/java/com/example/Week7Launcher.java)**
 
 ### 3. Process Isolation & Safety
 - Each application launched through the GUI dashboards or PowerShell scripts runs as an independent OS process via Java's `ProcessBuilder` or PowerShell's `Start-Process`.
