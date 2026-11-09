@@ -49,7 +49,13 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
 >    ```powershell
 >    .\scripts\run-week4.ps1 -All        # Launches all 10 Week 4 activities at once
 >    .\scripts\run-week4.ps1 -Launcher   # Opens the visual Master GUI Launcher
->    .\scripts\run-all.ps1               # Main menu for all weeks (Weeks 1 to 5)
+>    .\scripts\run-all.ps1               # Main menu for all weeks (Weeks 1 to 7, 10)
+>    ```
+>
+> 4. **Final Capstone: University Management System (JavaFX + Neon PostgreSQL):**
+>    ```bash
+>    mvn -f UniversitySystem/pom.xml javafx:run     # Launch full JavaFX application
+>    npm run test:university                         # Run headless Neon DB integration test
 >    ```
 
 ---
