@@ -16,23 +16,35 @@
         <Label text="Student Directory" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
         <HBox HBox.hgrow="ALWAYS"/>
         <TextField fx:id="searchField" promptText="🔍 Search name, reg, or email..." prefWidth="250"/>
-        <Button fx:id="refreshButton" text="⟳ Refresh" onAction="#handleRefresh" style="-fx-background-color: #ecf0f1; -fx-cursor: hand; -fx-font-weight: bold;"/>
+        <Button fx:id="refreshButton" text="⟳ Refresh" minWidth="-Infinity" onAction="#handleRefresh"
+                style="-fx-background-color: #ecf0f1; -fx-cursor: hand; -fx-font-weight: bold; -fx-padding: 6 14; -fx-background-radius: 6;"/>
     </HBox>
 
     <!-- CRUD Input Form -->
-    <VBox spacing="8" style="-fx-background-color: #f8f9fa; -fx-border-color: #e2e8f0; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 12;">
+    <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 14;">
+        <!-- Input Fields Row (Flexible & Responsive) -->
         <HBox spacing="10" alignment="CENTER_LEFT">
-            <TextField fx:id="regField" promptText="Reg Number (e.g. BCS-0150/2026)" prefWidth="170"/>
-            <TextField fx:id="firstNameField" promptText="First Name" prefWidth="130"/>
-            <TextField fx:id="lastNameField" promptText="Last Name" prefWidth="130"/>
-            <TextField fx:id="emailField" promptText="Email (optional, auto-generated)" prefWidth="230"/>
+            <TextField fx:id="regField" promptText="Reg Number (e.g. BCS-0150/2026)" minWidth="130" prefWidth="180" HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="firstNameField" promptText="First Name" minWidth="110" prefWidth="140" HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="lastNameField" promptText="Last Name" minWidth="110" prefWidth="140" HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="emailField" promptText="Institutional Email (optional)" minWidth="160" prefWidth="240" HBox.hgrow="ALWAYS"/>
         </HBox>
+
+        <!-- Action Buttons Row (minWidth="-Infinity" prevents any ellipsis truncating) -->
         <HBox spacing="10" alignment="CENTER_LEFT">
-            <Button fx:id="addButton" text="➕ Add Student" onAction="#handleAddStudent" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
-            <Button fx:id="updateButton" text="✏️ Update Selected" onAction="#handleUpdateStudent" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
-            <Button fx:id="deleteButton" text="🗑️ Delete Selected" onAction="#handleDeleteStudent" style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
-            <Button fx:id="clearButton" text="✖ Clear Form" onAction="#handleClearForm" style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-cursor: hand;"/>
-            <Label text="💡 Click a row to Edit/Delete (Hold Ctrl or Shift to select multiple for Bulk Delete)" style="-fx-text-fill: #7f8c8d; -fx-font-style: italic; -fx-font-size: 11px;"/>
+            <Button fx:id="addButton" text="➕ Add Student" minWidth="-Infinity" onAction="#handleAddStudent"
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6; -fx-cursor: hand;"/>
+            <Button fx:id="updateButton" text="✏️ Update" minWidth="-Infinity" onAction="#handleUpdateStudent"
+                    style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6; -fx-cursor: hand;"/>
+            <Button fx:id="deleteButton" text="🗑️ Delete" minWidth="-Infinity" onAction="#handleDeleteStudent"
+                    style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6; -fx-cursor: hand;"/>
+            <Button fx:id="clearButton" text="✖ Clear Form" minWidth="-Infinity" onAction="#handleClearForm"
+                    style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-padding: 8 14; -fx-background-radius: 6; -fx-cursor: hand;"/>
+
+            <HBox HBox.hgrow="ALWAYS"/>
+
+            <Label text="💡 Click row to Edit/Delete · Hold Ctrl/Shift for Bulk Delete"
+                   style="-fx-text-fill: #7f8c8d; -fx-font-style: italic; -fx-font-size: 11px;"/>
         </HBox>
     </VBox>
 

@@ -30,7 +30,9 @@ public class App extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
 
         primaryStage.setTitle("University Management System");
-        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setScene(new Scene(root, 1080, 680));
+        primaryStage.setMinWidth(960);
+        primaryStage.setMinHeight(600);
         primaryStage.show();
 
         // LO3: Scheduled background heartbeat task running every 5 seconds

@@ -136,7 +136,7 @@ public class StudentController {
                 selectedStudent = null;
                 updateButton.setDisable(true);
                 deleteButton.setDisable(true);
-                deleteButton.setText("🗑️ Delete Selected");
+                deleteButton.setText("🗑️ Delete");
                 statusLabel.setText("Ready to add a new student.");
             } else if (count == 1) {
                 selectedStudent = selected.get(0);
@@ -146,14 +146,14 @@ public class StudentController {
                 emailField.setText(selectedStudent.getEmail());
                 updateButton.setDisable(false);
                 deleteButton.setDisable(false);
-                deleteButton.setText("🗑️ Delete Selected");
+                deleteButton.setText("🗑️ Delete");
                 statusLabel.setText("Selected: " + selectedStudent.getFirstName() + " " + selectedStudent.getLastName() + " (" + selectedStudent.getRegNumber() + ") — Add is disabled for existing records.");
             } else {
                 // Multiple rows selected: Enable Bulk Delete, disable single-edit
                 selectedStudent = null;
                 updateButton.setDisable(true);
                 deleteButton.setDisable(false);
-                deleteButton.setText(String.format("🗑️ Bulk Delete (%d Selected)", count));
+                deleteButton.setText(String.format("🗑️ Bulk Delete (%d)", count));
                 statusLabel.setText(String.format("Selected %d students for bulk deletion (Hold Ctrl or Shift to select more).", count));
             }
         });
@@ -390,7 +390,7 @@ public class StudentController {
         emailField.clear();
         updateButton.setDisable(true);
         deleteButton.setDisable(true);
-        deleteButton.setText("🗑️ Delete Selected");
+        deleteButton.setText("🗑️ Delete");
         statusLabel.setText("Form cleared. Ready to enter a new student.");
     }
 
