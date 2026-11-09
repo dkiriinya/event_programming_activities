@@ -3,6 +3,8 @@ package com.university;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * DatabaseUtil — Manages PostgreSQL database connectivity for Neon.
@@ -87,39 +90,81 @@ public class DatabaseUtil {
         return defaultValue;
     }
 
-    public static String getJdbcUrl() {
-        String dbUrl = getEnv("DATABASE_URL", getEnv("POSTGRES_URL", null));
-        if (dbUrl != null && !dbUrl.isBlank()) {
-            if (dbUrl.startsWith("jdbc:postgresql://")) {
-                return dbUrl;
+    public static class DbInfo {
+        public String jdbcUrl;
+        public String user;
+        public String password;
+    }
+
+    public static DbInfo getDbInfo() {
+        DbInfo info = new DbInfo();
+        String raw = getEnv("DATABASE_URL", getEnv("POSTGRES_URL", null));
+        String user = getEnv("PGUSER", null);
+        String pass = getEnv("PGPASSWORD", null);
+        String url = null;
+
+        if (raw != null && !raw.isBlank()) {
+            String normalized = raw;
+            if (normalized.startsWith("jdbc:")) {
+                normalized = normalized.substring("jdbc:".length());
             }
-            if (dbUrl.startsWith("postgres://")) {
-                dbUrl = "jdbc:postgresql://" + dbUrl.substring("postgres://".length());
-            } else if (dbUrl.startsWith("postgresql://")) {
-                dbUrl = "jdbc:postgresql://" + dbUrl.substring("postgresql://".length());
+
+            if (normalized.startsWith("postgresql://") || normalized.startsWith("postgres://")) {
+                int schemeEnd = normalized.indexOf("://") + 3;
+                String rest = normalized.substring(schemeEnd);
+                int atIndex = rest.indexOf('@');
+                if (atIndex != -1) {
+                    String userInfo = rest.substring(0, atIndex);
+                    rest = rest.substring(atIndex + 1);
+                    int colonIndex = userInfo.indexOf(':');
+                    if (colonIndex != -1) {
+                        if (user == null) user = URLDecoder.decode(userInfo.substring(0, colonIndex), StandardCharsets.UTF_8);
+                        if (pass == null) pass = URLDecoder.decode(userInfo.substring(colonIndex + 1), StandardCharsets.UTF_8);
+                    } else {
+                        if (user == null) user = URLDecoder.decode(userInfo, StandardCharsets.UTF_8);
+                    }
+                }
+                url = "jdbc:postgresql://" + rest;
+            } else {
+                url = raw;
             }
-            if (!dbUrl.contains("sslmode=")) {
-                dbUrl += (dbUrl.contains("?") ? "&" : "?") + "sslmode=require";
-            }
-            return dbUrl;
         }
 
-        String host = getEnv("PGHOST", "localhost");
-        String port = getEnv("PGPORT", "5432");
-        String db = getEnv("PGDATABASE", "neondb");
-        String ssl = getEnv("PGSSLMODE", "require");
-        return "jdbc:postgresql://" + host + ":" + port + "/" + db + "?sslmode=" + ssl;
+        if (url == null) {
+            String host = getEnv("PGHOST", "localhost");
+            String port = getEnv("PGPORT", "5432");
+            String db = getEnv("PGDATABASE", "neondb");
+            String ssl = getEnv("PGSSLMODE", "require");
+            url = "jdbc:postgresql://" + host + ":" + port + "/" + db;
+            if (ssl != null && !ssl.isBlank()) {
+                url += "?sslmode=" + ssl;
+            }
+        }
+
+        if (!url.contains("sslmode=")) {
+            url += (url.contains("?") ? "&" : "?") + "sslmode=require";
+        }
+
+        info.jdbcUrl = url;
+        info.user = user;
+        info.password = pass;
+        return info;
+    }
+
+    public static String getJdbcUrl() {
+        return getDbInfo().jdbcUrl;
     }
 
     public static Connection getConnection() throws SQLException {
-        String url = getJdbcUrl();
-        String user = getEnv("PGUSER", null);
-        String pass = getEnv("PGPASSWORD", null);
-
-        if (user != null && pass != null) {
-            return DriverManager.getConnection(url, user, pass);
+        DbInfo info = getDbInfo();
+        Properties props = new Properties();
+        if (info.user != null) {
+            props.setProperty("user", info.user);
         }
-        return DriverManager.getConnection(url);
+        if (info.password != null) {
+            props.setProperty("password", info.password);
+        }
+        return DriverManager.getConnection(info.jdbcUrl, props);
     }
 
     /**
