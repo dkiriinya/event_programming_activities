@@ -9,11 +9,19 @@
 #>
 
 param(
-    [switch]$Test
+    [switch]$Test,
+    [switch]$Seed
 )
 
 $baseDir = Split-Path -Parent $PSScriptRoot
 $uniDir = Join-Path $baseDir "UniversitySystem"
+
+if ($Seed) {
+    Write-Host "Seeding 100 Kenyan Student Records into Neon PostgreSQL..." -ForegroundColor Cyan
+    $cp = "$uniDir\target\classes;$uniDir\lib\postgresql-42.7.3.jar"
+    java -cp $cp com.university.SeedStudents
+    exit
+}
 
 if ($Test) {
     Write-Host "Running Neon PostgreSQL End-to-End Test..." -ForegroundColor Cyan

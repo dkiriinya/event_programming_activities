@@ -3,6 +3,12 @@
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+if [ "$1" == "--seed" ] || [ "$1" == "-s" ]; then
+    echo "Seeding 100 Kenyan Student Records into Neon PostgreSQL..."
+    java -cp "$DIR/UniversitySystem/target/classes;$DIR/UniversitySystem/lib/postgresql-42.7.3.jar" com.university.SeedStudents
+    exit 0
+fi
+
 if [ "$1" == "--test" ] || [ "$1" == "-t" ]; then
     echo "Running Neon PostgreSQL End-to-End Test..."
     java -cp "$DIR/UniversitySystem/target/classes;$DIR/UniversitySystem/lib/postgresql-42.7.3.jar" com.university.UniversitySystemTest

@@ -8,7 +8,8 @@
     "test": "java -cp scripts AgentCLI verify",
     "info": "java -cp scripts AgentCLI info",
     "start:university": "mvn -f UniversitySystem/pom.xml javafx:run",
-    "test:university": "java -cp \"UniversitySystem/target/classes;UniversitySystem/lib/postgresql-42.7.3.jar\" com.university.UniversitySystemTest"
+    "test:university": "java -cp \"UniversitySystem/target/classes;UniversitySystem/lib/postgresql-42.7.3.jar\" com.university.UniversitySystemTest",
+    "seed:university": "java -cp \"UniversitySystem/target/classes;UniversitySystem/lib/postgresql-42.7.3.jar\" com.university.SeedStudents"
   },
   "keywords": [
     "java",
