@@ -63,4 +63,9 @@ week06-javafx/target/
 week06-javafx/nbproject/private/
 week07-javafx-events/target/
 week07-javafx-events/nbproject/private/
+UniversitySystem/target/
 
+.neon
+node_modules/
+.env
+.env.local

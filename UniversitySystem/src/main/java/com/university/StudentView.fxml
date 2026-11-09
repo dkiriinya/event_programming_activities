@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.university.StudentController">
+
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Student Management (Neon PostgreSQL)" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <HBox spacing="10">
+        <TextField fx:id="regField" promptText="Reg Number" prefWidth="120"/>
+        <TextField fx:id="firstNameField" promptText="First Name" prefWidth="120"/>
+        <TextField fx:id="lastNameField" promptText="Last Name" prefWidth="120"/>
+        <Button fx:id="saveButton" text="Save Student" onAction="#handleSaveStudent"/>
+    </HBox>
+
+    <TableView fx:id="studentTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colReg" text="Reg Number" prefWidth="120"/>
+            <TableColumn fx:id="colFirst" text="First Name" prefWidth="120"/>
+            <TableColumn fx:id="colLast" text="Last Name" prefWidth="120"/>
+        </columns>
+    </TableView>
+
+    <Label fx:id="statusLabel" text="Ready" textFill="blue"/>
+</VBox>

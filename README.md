@@ -28,8 +28,8 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
   ```
 
 > [!IMPORTANT]
-> ### 🎓 Instructor & Grader Quick-Run Guide
-> To evaluate all student submissions quickly without terminal errors, use the commands matching your environment:
+> ### 🎓 Instructor Quick-Run Guide
+> To evaluate my submission quickly and conveniently without terminal errors, use the commands matching your environment:
 >
 > 1. **Universal One-Command GUI Dashboard (Runs in ANY terminal on Windows/macOS/Linux):**
 >    ```bash
@@ -46,18 +46,10 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
 >    ```
 >
 > 3. **If You Are Using Windows PowerShell or CMD:**
->    *If script execution is disabled on your machine, use `.\agent-cli.bat` or bypass policy:*
 >    ```powershell
 >    .\scripts\run-week4.ps1 -All        # Launches all 10 Week 4 activities at once
 >    .\scripts\run-week4.ps1 -Launcher   # Opens the visual Master GUI Launcher
 >    .\scripts\run-all.ps1               # Main menu for all weeks (Weeks 1 to 5)
->    ```
->
-> 4. **🤖 AI Agent CLI (Automated Grading, Headless Testing & JSON API):**
->    ```bash
->    ./agent-cli grade --week 4 --json   # Automated grading rubric (0–100 score)
->    ./agent-cli verify --week 4 --json  # Bytecode verification & thread safety audit
->    ./agent-cli list --week 4 --json    # Complete metadata schema for AI agents
 >    ```
 
 ---
@@ -70,40 +62,20 @@ To ensure everything in the repository compiles cleanly and all 55+ source files
 | :--- | :--- | :--- |
 | **Git Bash / Linux / macOS** | `./build` | `./build --clean` |
 | **Windows CMD / PowerShell** | `.\build.bat` | `.\build.bat --clean` |
-| **AI Agent CLI** | `./agent-cli build` | `./agent-cli build --clean --json` |
 | **Node.js (if NPM is installed)** | `npm run build` | `npm run build:clean` |
 
 **What the build pipeline does:**
-1. Scans all 5 week directories (`Week1_Activity` through `week05-advanced-swing`) and launcher infrastructure.
+1. Scans all module directories (`Week1_Activity` through modern JavaFX) and launcher infrastructure.
 2. If `--clean` is passed, deletes old `.class` artifacts.
-3. Compiles all 55 source files simultaneously with `javac`.
-4. Validates that 95+ `.class` bytecode files are generated properly.
+3. Compiles all source files simultaneously with `javac`.
+4. Validates that all bytecode `.class` files are generated properly.
 5. Returns exit code `0` on success or non-zero on compiler errors with detailed diagnostics.
 
 ---
 
-## AI Agent CLI (`agent-cli`)
+## 🚀 Execution & Verification Options
 
-A scriptable, headless, AI-agent-first CLI interface ([`scripts/AgentCLI.java`](scripts/AgentCLI.java)) designed for **LLM coding agents** (Antigravity, Claude Code, GitHub Copilot, Devin), **automated CI/CD pipelines**, and **headless grading bots**.
-
-### Available Commands
-
-| Command | Description | Example (Git Bash / PowerShell / CMD) |
-| :--- | :--- | :--- |
-| `info` | Host environment, JDK path, and coursework stats | `./agent-cli info --json` |
-| `list` | Enumerate all 36 activities across Weeks 1–5 | `./agent-cli list --week 4 --json` |
-| `verify` | Check source files, compiled bytecode, and EDT safety | `./agent-cli verify --week 4` |
-| `inspect` | Static AST analysis of imports, lambdas, and patterns | `./agent-cli inspect w4-counter --json` |
-| `grade` | Compute an automated evaluation score (0–100) & letter grade | `./agent-cli grade --week 4 --json` |
-| `run` | Headless smoke testing (exits automatically after init) | `./agent-cli run w4-counter --headless --timeout 2000` |
-
-> [!TIP]
-> **Zero Dependencies:** The CLI is pure standard Java SE with zero Maven/Gradle overhead.
-> - In Git Bash / Linux / macOS: use `./agent-cli <command> [options]`
-> - In Windows PowerShell: use `.\agent-cli.bat <command> [options]`
-> - In any environment: use `java -cp scripts AgentCLI <command> [options]`
-
-We provide three convenient ways to run any activity:
+I have provided multiple convenient ways to launch and inspect every activity across each week:
 
 #### 1. Interactive Scripts & GUI Launchers (Organized in `scripts/` — Recommended)
 All execution scripts are maintained inside the [`scripts/`](scripts/) folder to keep the repository root clean.

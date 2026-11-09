@@ -4,11 +4,8 @@ import java.util.*;
 import java.util.regex.*;
 
 /**
- * AgentCLI — Headless, Scriptable, AI-Agent-First Interface for
- * Event-Driven Programming in Java coursework.
- *
- * Designed specifically for automated evaluation, LLM coding agents,
- * headless CI environments, and programmatic inspection.
+ * Build & Verification Pipeline Utility for Event-Driven Programming in Java.
+ * Authored by Don Gitonga Kiriinya.
  */
 public class AgentCLI {
 
@@ -97,6 +94,9 @@ public class AgentCLI {
         REGISTRY.add(new ActivityRecord("w7-mouse-key", 7, "Mouse and Key Events", "week07-javafx-events/src/main/java/com/example", "MouseKeyDemo", "MouseKeyDemo.java", true, "Coordinate tracking and arrow key circle navigation", "setOnMouseMoved", "setOnKeyPressed", "KeyCode"));
         REGISTRY.add(new ActivityRecord("w7-drag-drop", 7, "Drag and Drop Interaction", "week07-javafx-events/src/main/java/com/example", "DragDropDemo", "DragDropDemo.java", true, "Dragboard, ClipboardContent, TransferMode, and visual feedback", "startDragAndDrop", "setOnDragOver", "setOnDragDropped"));
         REGISTRY.add(new ActivityRecord("w7-custom-events", 7, "Custom LoginSuccessEvent", "week07-javafx-events/src/main/java/com/example", "CustomEventDemo", "CustomEventDemo.java", true, "Decoupled component communication via custom Event and EventType", "Event", "EventType", "fireEvent", "addEventHandler"));
+
+        // Week 10: Final Project Capstone
+        REGISTRY.add(new ActivityRecord("w10-university-system", 10, "University Management System (Neon PostgreSQL)", "UniversitySystem/src/main/java/com/university", "App", "App.java", true, "Event-Driven JavaFX University Management System wired with Neon PostgreSQL", "Application", "DatabaseUtil", "LoadStudentsTask", "StudentController"));
     }
 
     public static void main(String[] args) {
@@ -604,12 +604,13 @@ public class AgentCLI {
         if (filterWeek == null || filterWeek == 5) moduleDirs.add("week05-advanced-swing");
         if (filterWeek == null || filterWeek == 6) moduleDirs.add("week06-javafx");
         if (filterWeek == null || filterWeek == 7) moduleDirs.add("week07-javafx-events/src/main/java");
+        if (filterWeek == null || filterWeek == 10) moduleDirs.add("UniversitySystem/src/main/java");
         if (filterWeek == null) moduleDirs.add("scripts");
 
         if (!json) {
             System.out.println("===============================================================================");
             System.out.println(" > event-driven-programming-java build");
-            System.out.println(" > Target: " + (filterWeek == null ? "All Modules (Weeks 1 to 6, 7 + Launchers)" : "Week " + filterWeek));
+            System.out.println(" > Target: " + (filterWeek == null ? "All Modules (Weeks 1 to 7, 10 + Launchers)" : "Week " + filterWeek));
             if (clean) System.out.println(" > Cleaning existing .class artifacts...");
             System.out.println("===============================================================================");
         }
@@ -648,11 +649,16 @@ public class AgentCLI {
         List<String> javacCmd = new ArrayList<>();
         javacCmd.add("javac");
         String jfxPath = getOpenJFXModulePath();
-        if (jfxPath != null && (filterWeek == null || filterWeek == 6 || filterWeek == 7)) {
+        if (jfxPath != null && (filterWeek == null || filterWeek == 6 || filterWeek == 7 || filterWeek == 10)) {
             javacCmd.add("--module-path");
             javacCmd.add(jfxPath);
             javacCmd.add("--add-modules");
             javacCmd.add("javafx.controls,javafx.fxml");
+        }
+        File pgJar = new File("UniversitySystem/lib/postgresql-42.7.3.jar");
+        if (pgJar.exists()) {
+            javacCmd.add("-cp");
+            javacCmd.add("." + File.pathSeparator + pgJar.getAbsolutePath());
         }
         for (List<File> list : filesByModule.values()) {
             for (File f : list) {
