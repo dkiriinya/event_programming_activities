@@ -10,13 +10,18 @@ import java.sql.ResultSet;
 
 /**
  * Background Task handling non-blocking database queries (Producer-Consumer Pattern).
+ * Fetches all student records with linked program names off the JavaFX UI thread.
  */
 public class LoadStudentsTask extends Task<ObservableList<Student>> {
 
     @Override
     protected ObservableList<Student> call() throws Exception {
         ObservableList<Student> students = FXCollections.observableArrayList();
-        String sql = "SELECT student_id, registration_number, first_name, last_name FROM students ORDER BY student_id DESC";
+        String sql = "SELECT s.student_id, s.registration_number, s.first_name, s.last_name, s.email, " +
+                     "COALESCE(p.program_name, 'General') AS program_name " +
+                     "FROM students s " +
+                     "LEFT JOIN programs p ON s.program_id = p.program_id " +
+                     "ORDER BY s.student_id DESC";
 
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -27,7 +32,9 @@ public class LoadStudentsTask extends Task<ObservableList<Student>> {
                     rs.getInt("student_id"),
                     rs.getString("registration_number"),
                     rs.getString("first_name"),
-                    rs.getString("last_name")
+                    rs.getString("last_name"),
+                    rs.getString("email"),
+                    rs.getString("program_name")
                 );
                 students.add(student);
             }

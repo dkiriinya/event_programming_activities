@@ -2,30 +2,56 @@
 
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="15" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<VBox spacing="12" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.university.StudentController">
 
-    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
 
-    <Label text="Student Management (Neon PostgreSQL)" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-
-    <HBox spacing="10">
-        <TextField fx:id="regField" promptText="Reg Number" prefWidth="120"/>
-        <TextField fx:id="firstNameField" promptText="First Name" prefWidth="120"/>
-        <TextField fx:id="lastNameField" promptText="Last Name" prefWidth="120"/>
-        <Button fx:id="saveButton" text="Save Student" onAction="#handleSaveStudent"/>
+    <!-- Header Section -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="Student Directory &amp; CRUD Operations" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <HBox HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="searchField" promptText="🔍 Search name, reg, or email..." prefWidth="240"/>
+        <Button fx:id="refreshButton" text="⟳ Refresh" onAction="#handleRefresh" style="-fx-background-color: #ecf0f1; -fx-cursor: hand;"/>
     </HBox>
 
+    <!-- CRUD Input Form -->
+    <VBox spacing="8" style="-fx-background-color: #f8f9fa; -fx-border-color: #e2e8f0; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 12;">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <TextField fx:id="regField" promptText="Reg Number (e.g. BCS-0150/2026)" prefWidth="170"/>
+            <TextField fx:id="firstNameField" promptText="First Name" prefWidth="130"/>
+            <TextField fx:id="lastNameField" promptText="Last Name" prefWidth="130"/>
+            <TextField fx:id="emailField" promptText="Email (optional, auto-generated)" prefWidth="230"/>
+        </HBox>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button fx:id="addButton" text="➕ Add Student" onAction="#handleAddStudent" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+            <Button fx:id="updateButton" text="✏️ Update Selected" onAction="#handleUpdateStudent" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+            <Button fx:id="deleteButton" text="🗑️ Delete Selected" onAction="#handleDeleteStudent" style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+            <Button fx:id="clearButton" text="✖ Clear Form" onAction="#handleClearForm" style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-cursor: hand;"/>
+            <Label text="💡 Click any table row to select for Edit or Delete" style="-fx-text-fill: #7f8c8d; -fx-font-style: italic; -fx-font-size: 11px;"/>
+        </HBox>
+    </VBox>
+
+    <!-- Responsive TableView -->
     <TableView fx:id="studentTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="colReg" text="Reg Number" prefWidth="120"/>
+            <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+            <TableColumn fx:id="colReg" text="Reg Number" prefWidth="140"/>
             <TableColumn fx:id="colFirst" text="First Name" prefWidth="120"/>
             <TableColumn fx:id="colLast" text="Last Name" prefWidth="120"/>
+            <TableColumn fx:id="colEmail" text="Institutional Email" prefWidth="240"/>
+            <TableColumn fx:id="colProgram" text="Academic Program" prefWidth="180"/>
         </columns>
     </TableView>
 
-    <Label fx:id="statusLabel" text="Ready" textFill="blue"/>
+    <!-- Status Bar -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label fx:id="statusLabel" text="Connecting to Neon PostgreSQL..." style="-fx-text-fill: #2980b9; -fx-font-weight: bold;"/>
+        <HBox HBox.hgrow="ALWAYS"/>
+        <Label fx:id="countLabel" text="0 students" style="-fx-text-fill: #7f8c8d;"/>
+    </HBox>
 </VBox>

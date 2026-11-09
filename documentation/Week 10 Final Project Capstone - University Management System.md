@@ -127,17 +127,12 @@ public class LoadStudentsTask extends Task<ObservableList<Student>> {
 }
 ```
 
-### 3. Reactive UI & Input Validation ([`StudentController.java`](file:///z:/home/thema/school-projects/event_programming_activities/UniversitySystem/src/main/java/com/university/StudentController.java))
-- **Data Binding**: Columns are mapped via `setCellValueFactory` to the model properties.
-- **Dynamic Validation**: The **Save** button is disabled whenever any required field is blank:
-  ```java
-  saveButton.disableProperty().bind(
-      regField.textProperty().isEmpty()
-      .or(firstNameField.textProperty().isEmpty())
-      .or(lastNameField.textProperty().isEmpty())
-  );
-  ```
-- **Non-Blocking Insert**: When clicking "Save Student", a background `Task<Void>` executes the SQL `INSERT`, clearing fields and refreshing the table upon completion without freezing the UI.
+### 3. Full Reactive CRUD & Real-Time Search ([`StudentController.java`](file:///z:/home/thema/school-projects/event_programming_activities/UniversitySystem/src/main/java/com/university/StudentController.java))
+- **CREATE**: `handleAddStudent()` executes an asynchronous parameterized `INSERT` on a worker thread, automatically populating institutional email if left blank, then refreshes the table.
+- **READ & Live Search**: Data is wrapped in a `FilteredList<Student>` and `SortedList<Student>`, providing instant search filtering across name, registration number, email, and program as the user types in `searchField`.
+- **UPDATE**: Clicking any table row synchronizes form fields via `TableView.getSelectionModel().selectedItemProperty()`. `handleUpdateStudent()` executes an asynchronous `UPDATE` statement targeting the selected ID.
+- **DELETE**: Clicking **Delete Selected** triggers a confirmation alert before executing an asynchronous `DELETE` query, safely clearing selection upon completion.
+- **Dynamic Validation**: The **Add Student** button binds its `disableProperty()` to required field emptiness, preventing incomplete submissions.
 
 ### 4. Scheduled Background Worker ([`App.java`](file:///z:/home/thema/school-projects/event_programming_activities/UniversitySystem/src/main/java/com/university/App.java))
 Demonstrates LO3 with a `ScheduledExecutorService` configured during application startup:
