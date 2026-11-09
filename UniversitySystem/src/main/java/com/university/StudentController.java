@@ -1,5 +1,6 @@
 package com.university;
 
+import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -10,9 +11,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +24,8 @@ import java.util.Optional;
 
 /**
  * Controller providing full CRUD (Create, Read, Update, Delete) capabilities
- * for student records in Neon PostgreSQL, with live search and non-blocking background concurrency.
+ * for student records in Neon PostgreSQL, featuring a shaded loading overlay,
+ * live search filtering, and non-blocking background concurrency.
  */
 public class StudentController {
 
@@ -47,6 +52,12 @@ public class StudentController {
     @FXML private TableColumn<Student, String> colEmail;
     @FXML private TableColumn<Student, String> colProgram;
 
+    // Loading Shader / Scrim Overlay
+    @FXML private VBox loadingOverlay;
+    @FXML private ProgressIndicator loadingSpinner;
+    @FXML private Label loadingTitle;
+    @FXML private Label loadingSubtitle;
+
     // Status bar labels
     @FXML private Label statusLabel;
     @FXML private Label countLabel;
@@ -64,6 +75,11 @@ public class StudentController {
         colLast.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
         colEmail.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
         colProgram.setCellValueFactory(cellData -> cellData.getValue().programNameProperty());
+
+        // Setup placeholder for empty search results
+        Label placeholder = new Label("No matching students found in directory.");
+        placeholder.setStyle("-fx-text-fill: #95a5a6; -fx-font-size: 13px; -fx-font-style: italic;");
+        studentTable.setPlaceholder(placeholder);
 
         // 2. Setup live search filtering (FilteredList wraps master studentList)
         filteredStudents = new FilteredList<>(studentList, p -> true);
@@ -116,8 +132,43 @@ public class StudentController {
             }
         });
 
-        // 7. Load all students asynchronously from Neon PostgreSQL
+        // 7. Load all students asynchronously from Neon PostgreSQL with visual loading shader
         loadStudents();
+    }
+
+    /**
+     * Displays the shaded overlay with custom headline and subtitle.
+     */
+    private void showLoading(String title, String subtitle) {
+        if (loadingOverlay != null) {
+            if (loadingTitle != null) loadingTitle.setText(title);
+            if (loadingSubtitle != null) loadingSubtitle.setText(subtitle);
+            loadingOverlay.setOpacity(0.0);
+            loadingOverlay.setVisible(true);
+            loadingOverlay.setManaged(true);
+
+            FadeTransition ft = new FadeTransition(Duration.millis(180), loadingOverlay);
+            ft.setFromValue(0.0);
+            ft.setToValue(1.0);
+            ft.play();
+        }
+    }
+
+    /**
+     * Smoothly fades out and conceals the shaded overlay.
+     */
+    private void hideLoading() {
+        if (loadingOverlay != null && loadingOverlay.isVisible()) {
+            FadeTransition ft = new FadeTransition(Duration.millis(220), loadingOverlay);
+            ft.setFromValue(1.0);
+            ft.setToValue(0.0);
+            ft.setOnFinished(e -> {
+                loadingOverlay.setVisible(false);
+                loadingOverlay.setManaged(false);
+                loadingOverlay.setOpacity(1.0);
+            });
+            ft.play();
+        }
     }
 
     /**
@@ -135,6 +186,7 @@ public class StudentController {
 
         final String finalEmail = mail;
         statusLabel.setText("Adding student to Neon PostgreSQL...");
+        showLoading("Adding Student...", "Inserting " + reg + " into Neon PostgreSQL...");
 
         Task<Void> addTask = new Task<>() {
             @Override
@@ -163,6 +215,7 @@ public class StudentController {
         });
 
         addTask.setOnFailed(e -> {
+            hideLoading();
             Throwable ex = addTask.getException();
             statusLabel.setText("✗ Error adding student: " + (ex != null ? ex.getMessage() : "Unknown error"));
         });
@@ -191,6 +244,7 @@ public class StudentController {
 
         final String finalEmail = mail;
         statusLabel.setText("Updating student ID " + studentId + " in Neon PostgreSQL...");
+        showLoading("Updating Student...", "Writing changes for " + reg + " to Neon...");
 
         Task<Void> updateTask = new Task<>() {
             @Override
@@ -216,6 +270,7 @@ public class StudentController {
         });
 
         updateTask.setOnFailed(e -> {
+            hideLoading();
             Throwable ex = updateTask.getException();
             statusLabel.setText("✗ Error updating student: " + (ex != null ? ex.getMessage() : "Unknown error"));
         });
@@ -250,6 +305,7 @@ public class StudentController {
         }
 
         statusLabel.setText("Deleting student " + reg + " from database...");
+        showLoading("Deleting Student...", "Permanently removing " + reg + " from Neon...");
 
         Task<Void> deleteTask = new Task<>() {
             @Override
@@ -271,6 +327,7 @@ public class StudentController {
         });
 
         deleteTask.setOnFailed(e -> {
+            hideLoading();
             Throwable ex = deleteTask.getException();
             statusLabel.setText("✗ Error deleting student: " + (ex != null ? ex.getMessage() : "Unknown error"));
         });
@@ -304,18 +361,22 @@ public class StudentController {
     }
 
     /**
-     * READ: Loads all students asynchronously on a background thread.
+     * READ: Loads all students asynchronously on a background thread with visual loading shader.
      */
     public void loadStudents() {
+        showLoading("Connecting to Neon Cloud...", "Fetching 100+ active student records over SSL...");
+
         LoadStudentsTask task = new LoadStudentsTask();
 
         task.setOnSucceeded(e -> {
             studentList.setAll(task.getValue());
             updateCountLabel();
             statusLabel.setText("✓ Loaded " + studentList.size() + " active student records from Neon PostgreSQL.");
+            hideLoading();
         });
 
         task.setOnFailed(e -> {
+            hideLoading();
             Throwable ex = task.getException();
             statusLabel.setText("✗ Error loading students: " + (ex != null ? ex.getMessage() : "Unknown error"));
         });
