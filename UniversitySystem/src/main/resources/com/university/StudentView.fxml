@@ -13,7 +13,7 @@
 
     <!-- Header Section -->
     <HBox alignment="CENTER_LEFT" spacing="15">
-        <Label text="Student Directory &amp; CRUD Operations" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <Label text="Student Directory" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
         <HBox HBox.hgrow="ALWAYS"/>
         <TextField fx:id="searchField" promptText="🔍 Search name, reg, or email..." prefWidth="250"/>
         <Button fx:id="refreshButton" text="⟳ Refresh" onAction="#handleRefresh" style="-fx-background-color: #ecf0f1; -fx-cursor: hand; -fx-font-weight: bold;"/>
@@ -32,7 +32,7 @@
             <Button fx:id="updateButton" text="✏️ Update Selected" onAction="#handleUpdateStudent" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
             <Button fx:id="deleteButton" text="🗑️ Delete Selected" onAction="#handleDeleteStudent" style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
             <Button fx:id="clearButton" text="✖ Clear Form" onAction="#handleClearForm" style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-cursor: hand;"/>
-            <Label text="💡 Click any table row to select for Edit or Delete" style="-fx-text-fill: #7f8c8d; -fx-font-style: italic; -fx-font-size: 11px;"/>
+            <Label text="💡 Click a row to Edit/Delete (Hold Ctrl or Shift to select multiple for Bulk Delete)" style="-fx-text-fill: #7f8c8d; -fx-font-style: italic; -fx-font-size: 11px;"/>
         </HBox>
     </VBox>
 

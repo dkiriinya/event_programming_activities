@@ -1,7 +1,10 @@
 package com.university;
 
 import javafx.animation.FadeTransition;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -12,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -20,12 +24,15 @@ import javafx.util.Duration;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
- * Controller providing full CRUD (Create, Read, Update, Delete) capabilities
+ * Controller providing full CRUD (Create, Read, Update, Bulk Delete) capabilities
  * for student records in Neon PostgreSQL, featuring a shaded loading overlay,
- * live search filtering, and non-blocking background concurrency.
+ * live search filtering, multi-selection, and non-blocking background concurrency.
  */
 public class StudentController {
 
@@ -68,7 +75,10 @@ public class StudentController {
 
     @FXML
     public void initialize() {
-        // 1. Bind TableColumns to Student observable properties
+        // 1. Configure TableView multi-selection mode for bulk delete
+        studentTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        // 2. Bind TableColumns to Student observable properties
         colId.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         colReg.setCellValueFactory(cellData -> cellData.getValue().regNumberProperty());
         colFirst.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
@@ -81,7 +91,7 @@ public class StudentController {
         placeholder.setStyle("-fx-text-fill: #95a5a6; -fx-font-size: 13px; -fx-font-style: italic;");
         studentTable.setPlaceholder(placeholder);
 
-        // 2. Setup live search filtering (FilteredList wraps master studentList)
+        // 3. Setup live search filtering (FilteredList wraps master studentList)
         filteredStudents = new FilteredList<>(studentList, p -> true);
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredStudents.setPredicate(student -> {
@@ -98,41 +108,57 @@ public class StudentController {
             updateCountLabel();
         });
 
-        // 3. Wrap filtered list in a SortedList so column clicking still sorts
+        // 4. Wrap filtered list in a SortedList so column clicking still sorts
         SortedList<Student> sortedStudents = new SortedList<>(filteredStudents);
         sortedStudents.comparatorProperty().bind(studentTable.comparatorProperty());
         studentTable.setItems(sortedStudents);
 
-        // 4. Input validation: Disable 'Add Student' if mandatory fields are empty
-        addButton.disableProperty().bind(
-            regField.textProperty().isEmpty()
-                .or(firstNameField.textProperty().isEmpty())
-                .or(lastNameField.textProperty().isEmpty())
-        );
+        // 5. Reactive validation: 'Add Student' is DISABLED whenever:
+        //    (a) An existing student is currently selected in the table (prevents adding duplicate info), OR
+        //    (b) Any mandatory text field (reg, first name, last name) is empty.
+        BooleanBinding hasSelection = Bindings.isNotEmpty(studentTable.getSelectionModel().getSelectedItems());
+        BooleanBinding fieldsIncomplete = regField.textProperty().isEmpty()
+            .or(firstNameField.textProperty().isEmpty())
+            .or(lastNameField.textProperty().isEmpty());
 
-        // 5. Initial state for Update & Delete (disabled until a student row is selected)
+        addButton.disableProperty().bind(hasSelection.or(fieldsIncomplete));
+
+        // 6. Initial state for Update & Delete (disabled until a student row is selected)
         updateButton.setDisable(true);
         deleteButton.setDisable(true);
 
-        // 6. Table selection listener: populate form fields when a row is clicked
-        studentTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) {
-                selectedStudent = newVal;
-                regField.setText(newVal.getRegNumber());
-                firstNameField.setText(newVal.getFirstName());
-                lastNameField.setText(newVal.getLastName());
-                emailField.setText(newVal.getEmail());
-                updateButton.setDisable(false);
-                deleteButton.setDisable(false);
-                statusLabel.setText("Selected: " + newVal.getFirstName() + " " + newVal.getLastName() + " (" + newVal.getRegNumber() + ")");
-            } else {
+        // 7. Multi-selection listener: handles single selection, bulk selection, and form synchronization
+        studentTable.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Student>) c -> {
+            ObservableList<Student> selected = studentTable.getSelectionModel().getSelectedItems();
+            int count = selected.size();
+
+            if (count == 0) {
                 selectedStudent = null;
                 updateButton.setDisable(true);
                 deleteButton.setDisable(true);
+                deleteButton.setText("🗑️ Delete Selected");
+                statusLabel.setText("Ready to add a new student.");
+            } else if (count == 1) {
+                selectedStudent = selected.get(0);
+                regField.setText(selectedStudent.getRegNumber());
+                firstNameField.setText(selectedStudent.getFirstName());
+                lastNameField.setText(selectedStudent.getLastName());
+                emailField.setText(selectedStudent.getEmail());
+                updateButton.setDisable(false);
+                deleteButton.setDisable(false);
+                deleteButton.setText("🗑️ Delete Selected");
+                statusLabel.setText("Selected: " + selectedStudent.getFirstName() + " " + selectedStudent.getLastName() + " (" + selectedStudent.getRegNumber() + ") — Add is disabled for existing records.");
+            } else {
+                // Multiple rows selected: Enable Bulk Delete, disable single-edit
+                selectedStudent = null;
+                updateButton.setDisable(true);
+                deleteButton.setDisable(false);
+                deleteButton.setText(String.format("🗑️ Bulk Delete (%d Selected)", count));
+                statusLabel.setText(String.format("Selected %d students for bulk deletion (Hold Ctrl or Shift to select more).", count));
             }
         });
 
-        // 7. Load all students asynchronously from Neon PostgreSQL with visual loading shader
+        // 8. Load all students asynchronously from Neon PostgreSQL with visual loading shader
         loadStudents();
     }
 
@@ -229,7 +255,7 @@ public class StudentController {
     @FXML
     public void handleUpdateStudent() {
         if (selectedStudent == null) {
-            statusLabel.setText("Please select a student from the table to update.");
+            statusLabel.setText("Please select a single student from the table to update.");
             return;
         }
 
@@ -279,24 +305,30 @@ public class StudentController {
     }
 
     /**
-     * DELETE: Deletes the currently selected student from Neon PostgreSQL after confirmation.
+     * DELETE / BULK DELETE: Deletes one or more selected students from Neon PostgreSQL after confirmation.
      */
     @FXML
     public void handleDeleteStudent() {
-        if (selectedStudent == null) {
-            statusLabel.setText("Please select a student from the table to delete.");
+        ObservableList<Student> selected = studentTable.getSelectionModel().getSelectedItems();
+        if (selected == null || selected.isEmpty()) {
+            statusLabel.setText("Please select one or more students from the table to delete.");
             return;
         }
 
-        int studentId = selectedStudent.getId();
-        String reg = selectedStudent.getRegNumber();
-        String fullName = selectedStudent.getFirstName() + " " + selectedStudent.getLastName();
+        List<Student> toDelete = new ArrayList<>(selected);
+        int deleteCount = toDelete.size();
 
-        // Confirmation Dialog
+        // Confirmation Dialog (single vs bulk)
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Deletion");
-        alert.setHeaderText("Delete Student Record?");
-        alert.setContentText("Are you sure you want to permanently delete " + fullName + " (" + reg + ") from Neon PostgreSQL?");
+        if (deleteCount == 1) {
+            Student s = toDelete.get(0);
+            alert.setHeaderText("Delete Student Record?");
+            alert.setContentText("Are you sure you want to permanently delete " + s.getFirstName() + " " + s.getLastName() + " (" + s.getRegNumber() + ") from Neon PostgreSQL?");
+        } else {
+            alert.setHeaderText("Bulk Delete " + deleteCount + " Students?");
+            alert.setContentText("Are you sure you want to permanently delete " + deleteCount + " selected student records from Neon PostgreSQL?\nThis operation cannot be undone.");
+        }
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isEmpty() || result.get() != ButtonType.OK) {
@@ -304,24 +336,34 @@ public class StudentController {
             return;
         }
 
-        statusLabel.setText("Deleting student " + reg + " from database...");
-        showLoading("Deleting Student...", "Permanently removing " + reg + " from Neon...");
+        statusLabel.setText("Deleting " + deleteCount + " student(s) from database...");
+        showLoading("Deleting Student(s)...", "Permanently removing " + deleteCount + " student record(s) from Neon...");
 
-        Task<Void> deleteTask = new Task<>() {
+        Task<Integer> deleteTask = new Task<>() {
             @Override
-            protected Void call() throws Exception {
+            protected Integer call() throws Exception {
                 String sql = "DELETE FROM students WHERE student_id = ?";
+                int deleted = 0;
                 try (Connection conn = DatabaseUtil.getConnection();
                      PreparedStatement stmt = conn.prepareStatement(sql)) {
-                    stmt.setInt(1, studentId);
-                    stmt.executeUpdate();
+                    for (Student s : toDelete) {
+                        stmt.setInt(1, s.getId());
+                        stmt.addBatch();
+                    }
+                    int[] batchResults = stmt.executeBatch();
+                    for (int r : batchResults) {
+                        if (r >= 0 || r == Statement.SUCCESS_NO_INFO) {
+                            deleted++;
+                        }
+                    }
                 }
-                return null;
+                return deleted;
             }
         };
 
         deleteTask.setOnSucceeded(e -> {
-            statusLabel.setText("✓ Student " + reg + " deleted from database.");
+            int count = deleteTask.getValue();
+            statusLabel.setText("✓ Successfully deleted " + count + " student record(s) from Neon PostgreSQL.");
             handleClearForm();
             loadStudents();
         });
@@ -329,14 +371,14 @@ public class StudentController {
         deleteTask.setOnFailed(e -> {
             hideLoading();
             Throwable ex = deleteTask.getException();
-            statusLabel.setText("✗ Error deleting student: " + (ex != null ? ex.getMessage() : "Unknown error"));
+            statusLabel.setText("✗ Error deleting students: " + (ex != null ? ex.getMessage() : "Unknown error"));
         });
 
         new Thread(deleteTask).start();
     }
 
     /**
-     * Clears form inputs and resets table selection.
+     * Clears form inputs and resets table selection so the user can enter a new student.
      */
     @FXML
     public void handleClearForm() {
@@ -348,7 +390,8 @@ public class StudentController {
         emailField.clear();
         updateButton.setDisable(true);
         deleteButton.setDisable(true);
-        statusLabel.setText("Form cleared. Ready.");
+        deleteButton.setText("🗑️ Delete Selected");
+        statusLabel.setText("Form cleared. Ready to enter a new student.");
     }
 
     /**

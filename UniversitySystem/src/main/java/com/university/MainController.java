@@ -53,7 +53,7 @@ public class MainController {
         cards.getChildren().addAll(card1, card2, card3);
 
         // Action CTA Button
-        Button openStudentsBtn = new Button("Open Student Directory & CRUD  ➔");
+        Button openStudentsBtn = new Button("Open Student Directory  ➔");
         openStudentsBtn.setStyle("-fx-background-color: #2c3e50; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 12 24; -fx-background-radius: 8; -fx-cursor: hand;");
         openStudentsBtn.setOnAction(e -> showStudents());
 
