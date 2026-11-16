@@ -95,6 +95,19 @@ public class AgentCLI {
         REGISTRY.add(new ActivityRecord("w7-drag-drop", 7, "Drag and Drop Interaction", "week07-javafx-events/src/main/java/com/example", "DragDropDemo", "DragDropDemo.java", true, "Dragboard, ClipboardContent, TransferMode, and visual feedback", "startDragAndDrop", "setOnDragOver", "setOnDragDropped"));
         REGISTRY.add(new ActivityRecord("w7-custom-events", 7, "Custom LoginSuccessEvent", "week07-javafx-events/src/main/java/com/example", "CustomEventDemo", "CustomEventDemo.java", true, "Decoupled component communication via custom Event and EventType", "Event", "EventType", "fireEvent", "addEventHandler"));
 
+        // Week 8
+        REGISTRY.add(new ActivityRecord("w8-person-model", 8, "Observable Properties (Person Model)", "week08-javafx-bindings/src/main/java/com/example", "Person", "Person.java", false, "Observable JavaFX data model with StringProperty and IntegerProperty", "StringProperty", "IntegerProperty", "SimpleStringProperty", "SimpleIntegerProperty"));
+        REGISTRY.add(new ActivityRecord("w8-listeners", 8, "ChangeListener vs InvalidationListener", "week08-javafx-bindings/src/main/java/com/example", "ListenerDemo", "ListenerDemo.java", true, "Property listeners demonstrating invalidation vs old/new value notifications", "addListener", "nameProperty"));
+        REGISTRY.add(new ActivityRecord("w8-unidirectional", 8, "Unidirectional Binding", "week08-javafx-bindings/src/main/java/com/example", "UnidirectionalDemo", "UnidirectionalDemo.java", true, "One-way binding from TextField textProperty to Label textProperty", "bind", "textProperty", "concat"));
+        REGISTRY.add(new ActivityRecord("w8-bidirectional", 8, "Bidirectional Binding", "week08-javafx-bindings/src/main/java/com/example", "BidirectionalDemo", "BidirectionalDemo.java", true, "Two-way synchronization between Slider and TextField with NumberStringConverter", "bindBidirectional", "valueProperty", "NumberStringConverter"));
+        REGISTRY.add(new ActivityRecord("w8-reactive-form", 8, "Capstone Reactive Registration Form", "week08-javafx-bindings/src/main/java/com/example", "ReactiveFormApp", "ReactiveFormApp.java", true, "Reactive registration form with live character counter, preview, and disableProperty validation", "Bindings", "disableProperty", "isEmpty", "greaterThan"));
+
+        // Week 9
+        REGISTRY.add(new ActivityRecord("w9-freeze", 9, "The Freeze (Blocking UI Thread)", "week09-async-javafx/src/main/java/com/example", "FreezeDemo", "FreezeDemo.java", true, "Demonstrates UI thread starvation with Thread.sleep(5000)", "Thread.sleep", "setOnAction"));
+        REGISTRY.add(new ActivityRecord("w9-task", 9, "The Fix (Task & Platform.runLater)", "week09-async-javafx/src/main/java/com/example", "TaskDemo", "TaskDemo.java", true, "Background Task execution with Platform.runLater UI updates", "Task", "Platform.runLater", "Thread"));
+        REGISTRY.add(new ActivityRecord("w9-progress", 9, "Live Progress (ProgressBar Binding)", "week09-async-javafx/src/main/java/com/example", "ProgressDemo", "ProgressDemo.java", true, "Real-time ProgressBar and Label binding to Task progressProperty and messageProperty", "updateProgress", "updateMessage", "progressProperty", "unbind"));
+        REGISTRY.add(new ActivityRecord("w9-service", 9, "Capstone Service Class (DataSyncService)", "week09-async-javafx/src/main/java/com/example", "ServiceDemo", "ServiceDemo.java", true, "Reusable, restartable, and cancellable Service with ProgressIndicator", "Service", "createTask", "restart", "cancel"));
+
         // Week 10: Final Project Capstone
         REGISTRY.add(new ActivityRecord("w10-university-system", 10, "University Management System (Neon PostgreSQL)", "UniversitySystem/src/main/java/com/university", "App", "App.java", true, "Event-Driven JavaFX University Management System wired with Neon PostgreSQL", "Application", "DatabaseUtil", "LoadStudentsTask", "StudentController"));
     }
@@ -158,7 +171,7 @@ public class AgentCLI {
         System.out.println("Commands for AI Agents & Automated Tooling:");
         System.out.println("  build [--clean]     Compile all modules across all weeks (like 'npm run build').");
         System.out.println("  info                Display coursework metadata, Java environment, and summary.");
-        System.out.println("  list [--week <n>]   List registered activities across weeks (1 to 5).");
+        System.out.println("  list [--week <n>]   List registered activities across weeks (1 to 10).");
         System.out.println("  inspect <id|class>  Deep static analysis of an activity's source code.");
         System.out.println("  verify [--week <n>] Verify compilation, bytecode presence, and pattern safety.");
         System.out.println("  grade [--week <n>]  Compute an automated score against course learning outcomes.");
@@ -168,11 +181,11 @@ public class AgentCLI {
         System.out.println("  --json, -j          Emit machine-readable JSON output for automated ingestion.");
         System.out.println();
         System.out.println("Examples:");
-        System.out.println("  java scripts/AgentCLI.java list --week 4 --json");
-        System.out.println("  java scripts/AgentCLI.java verify --week 4");
-        System.out.println("  java scripts/AgentCLI.java inspect w4-counter --json");
-        System.out.println("  java scripts/AgentCLI.java grade --week 4 --json");
-        System.out.println("  java scripts/AgentCLI.java run w4-counter --headless --timeout 2000");
+        System.out.println("  java scripts/AgentCLI.java list --week 8 --json");
+        System.out.println("  java scripts/AgentCLI.java verify --week 8");
+        System.out.println("  java scripts/AgentCLI.java inspect w8-reactive-form --json");
+        System.out.println("  java scripts/AgentCLI.java grade --week 8 --json");
+        System.out.println("  java scripts/AgentCLI.java run w8-reactive-form --headless --timeout 2000");
         System.out.println("===============================================================================");
     }
 
@@ -185,7 +198,7 @@ public class AgentCLI {
         if (json) {
             System.out.println("{");
             System.out.println("  \"coursework\": \"Event-Driven Programming in Java\",");
-            System.out.println("  \"totalWeeks\": 7,");
+            System.out.println("  \"totalWeeks\": 10,");
             System.out.println("  \"totalActivities\": " + totalActivities + ",");
             System.out.println("  \"javaVersion\": \"" + escapeJson(javaVer) + "\",");
             System.out.println("  \"javaHome\": \"" + escapeJson(javaHome) + "\",");
@@ -194,7 +207,7 @@ public class AgentCLI {
             System.out.println("}");
         } else {
             System.out.println("Coursework: Event-Driven Programming in Java");
-            System.out.println("Total Modules: Weeks 1–5, 7 (" + totalActivities + " Registered Activities)");
+            System.out.println("Total Modules: Weeks 1–10 (" + totalActivities + " Registered Activities)");
             System.out.println("Java Runtime: " + javaVer + " (" + javaHome + ")");
             System.out.println("Host OS:      " + osName);
             System.out.println("Capabilities: Headless Verification, Static Code Audit, Automated Grading Rubric");
@@ -258,7 +271,7 @@ public class AgentCLI {
         int byteCount = content.getBytes().length;
 
         // Pattern checks
-        boolean hasEdt = content.contains("SwingUtilities.invokeLater");
+        boolean hasEdt = content.contains("SwingUtilities.invokeLater") || content.contains("Application") || content.contains("Platform.runLater");
         boolean hasLambda = content.contains("->");
         boolean hasMethodRef = content.contains("::");
         boolean hasAnonInner = content.contains("new ActionListener()") || content.contains("new ItemListener()")
@@ -303,7 +316,7 @@ public class AgentCLI {
             System.out.println("=== Source Inspection: " + act.name + " (" + act.id + ") ===");
             System.out.println("Path:               " + file.getPath());
             System.out.println("Size:               " + lineCount + " lines (" + byteCount + " bytes)");
-            System.out.println("EDT Thread Safety:  " + (hasEdt ? "[PASS] Uses SwingUtilities.invokeLater" : (act.isGui ? "[WARN] No explicit invokeLater detected" : "[N/A] CLI Activity")));
+            System.out.println("EDT Thread Safety:  " + (hasEdt ? "[PASS] Uses GUI Application Thread" : (act.isGui ? "[WARN] No explicit invokeLater detected" : "[N/A] Model / CLI Activity")));
             System.out.println("Listener Paradigms: Lambda=" + hasLambda + ", MethodReference=" + hasMethodRef + ", AnonymousClass=" + hasAnonInner);
             System.out.println("Verified Patterns:  " + String.join(", ", matchedKeywords));
             System.out.println("Import Count:       " + detectedImports.size() + " packages imported.");
@@ -325,6 +338,12 @@ public class AgentCLI {
                 if (targetCls.exists()) cls = targetCls;
             } else if (!cls.exists() && r.week == 7) {
                 File targetCls = new File("week07-javafx-events/target/classes/com/example", r.className + ".class");
+                if (targetCls.exists()) cls = targetCls;
+            } else if (!cls.exists() && r.week == 8) {
+                File targetCls = new File("week08-javafx-bindings/target/classes/com/example", r.className + ".class");
+                if (targetCls.exists()) cls = targetCls;
+            } else if (!cls.exists() && r.week == 9) {
+                File targetCls = new File("week09-async-javafx/target/classes/com/example", r.className + ".class");
                 if (targetCls.exists()) cls = targetCls;
             }
 
@@ -381,10 +400,9 @@ public class AgentCLI {
 
     private static void cmdGrade(String[] args, boolean json) throws IOException {
         Integer filterWeek = getArgInt(args, "--week");
-        if (filterWeek == null) filterWeek = 4; // Default to Week 4 if unspecified
+        if (filterWeek == null) filterWeek = 8; // Default to Week 8 if unspecified
 
         double score = 0;
-        double maxScore = 100;
         List<String> notes = new ArrayList<>();
 
         List<ActivityRecord> weekActs = new ArrayList<>();
@@ -405,6 +423,12 @@ public class AgentCLI {
                 if (targetCls.exists()) cls = targetCls;
             } else if (!cls.exists() && act.week == 7) {
                 File targetCls = new File("week07-javafx-events/target/classes/com/example", act.className + ".class");
+                if (targetCls.exists()) cls = targetCls;
+            } else if (!cls.exists() && act.week == 8) {
+                File targetCls = new File("week08-javafx-bindings/target/classes/com/example", act.className + ".class");
+                if (targetCls.exists()) cls = targetCls;
+            } else if (!cls.exists() && act.week == 9) {
+                File targetCls = new File("week09-async-javafx/target/classes/com/example", act.className + ".class");
                 if (targetCls.exists()) cls = targetCls;
             }
 
@@ -445,8 +469,10 @@ public class AgentCLI {
         File sa5 = new File("Week0" + filterWeek + "-observer-pattern", "SelfAssessment.md");
         File sa6 = new File("week06-javafx", "SelfAssessment.md");
         File sa7 = new File("week0" + filterWeek + "-javafx-events", "SelfAssessment.md");
+        File sa8 = new File("week0" + filterWeek + "-javafx-bindings", "SelfAssessment.md");
+        File sa9 = new File("week0" + filterWeek + "-async-javafx", "SelfAssessment.md");
 
-        if (sa1.exists() || sa2.exists() || sa3.exists() || sa4.exists() || sa5.exists() || sa6.exists() || sa7.exists()) {
+        if (sa1.exists() || sa2.exists() || sa3.exists() || sa4.exists() || sa5.exists() || sa6.exists() || sa7.exists() || sa8.exists() || sa9.exists()) {
             score += 15.0;
         } else {
             notes.add("SelfAssessment.md not found for week " + filterWeek);
@@ -539,6 +565,36 @@ public class AgentCLI {
                 cmd.add(new File(act.folder).getAbsolutePath());
             }
             cmd.add("com.example." + act.className);
+        } else if (act.week == 8) {
+            if (jfxPath != null) {
+                cmd.add("--module-path");
+                cmd.add(jfxPath);
+                cmd.add("--add-modules");
+                cmd.add("javafx.controls,javafx.fxml");
+            }
+            cmd.add("-cp");
+            File targetClasses = new File("week08-javafx-bindings/target/classes");
+            if (targetClasses.exists()) {
+                cmd.add(targetClasses.getAbsolutePath());
+            } else {
+                cmd.add(new File("week08-javafx-bindings/src/main/java").getAbsolutePath());
+            }
+            cmd.add("com.example." + act.className);
+        } else if (act.week == 9) {
+            if (jfxPath != null) {
+                cmd.add("--module-path");
+                cmd.add(jfxPath);
+                cmd.add("--add-modules");
+                cmd.add("javafx.controls,javafx.fxml");
+            }
+            cmd.add("-cp");
+            File targetClasses = new File("week09-async-javafx/target/classes");
+            if (targetClasses.exists()) {
+                cmd.add(targetClasses.getAbsolutePath());
+            } else {
+                cmd.add(new File("week09-async-javafx/src/main/java").getAbsolutePath());
+            }
+            cmd.add("com.example." + act.className);
         } else {
             cmd.add("-cp");
             cmd.add(new File(act.folder).getAbsolutePath());
@@ -604,13 +660,15 @@ public class AgentCLI {
         if (filterWeek == null || filterWeek == 5) moduleDirs.add("week05-advanced-swing");
         if (filterWeek == null || filterWeek == 6) moduleDirs.add("week06-javafx");
         if (filterWeek == null || filterWeek == 7) moduleDirs.add("week07-javafx-events/src/main/java");
+        if (filterWeek == null || filterWeek == 8) moduleDirs.add("week08-javafx-bindings/src/main/java");
+        if (filterWeek == null || filterWeek == 9) moduleDirs.add("week09-async-javafx/src/main/java");
         if (filterWeek == null || filterWeek == 10) moduleDirs.add("UniversitySystem/src/main/java");
         if (filterWeek == null) moduleDirs.add("scripts");
 
         if (!json) {
             System.out.println("===============================================================================");
             System.out.println(" > event-driven-programming-java build");
-            System.out.println(" > Target: " + (filterWeek == null ? "All Modules (Weeks 1 to 7, 10 + Launchers)" : "Week " + filterWeek));
+            System.out.println(" > Target: " + (filterWeek == null ? "All Modules (Weeks 1 to 10 + Launchers)" : "Week " + filterWeek));
             if (clean) System.out.println(" > Cleaning existing .class artifacts...");
             System.out.println("===============================================================================");
         }
@@ -649,7 +707,7 @@ public class AgentCLI {
         List<String> javacCmd = new ArrayList<>();
         javacCmd.add("javac");
         String jfxPath = getOpenJFXModulePath();
-        if (jfxPath != null && (filterWeek == null || filterWeek == 6 || filterWeek == 7 || filterWeek == 10)) {
+        if (jfxPath != null && (filterWeek == null || filterWeek == 6 || filterWeek == 7 || filterWeek == 8 || filterWeek == 9 || filterWeek == 10)) {
             javacCmd.add("--module-path");
             javacCmd.add(jfxPath);
             javacCmd.add("--add-modules");

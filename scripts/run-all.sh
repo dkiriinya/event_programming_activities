@@ -32,6 +32,14 @@ case "$1" in
         bash "$DIR/run-week7.sh" "$2"
         exit 0
         ;;
+    8|--week8)
+        bash "$DIR/run-week8.sh" "$2"
+        exit 0
+        ;;
+    9|--week9)
+        bash "$DIR/run-week9.sh" "$2"
+        exit 0
+        ;;
     10|--university)
         bash "$DIR/run-university.sh" "$2"
         exit 0
@@ -51,6 +59,8 @@ echo -e " \033[32m[4]\033[0m  Week 4: Interactive Swing Event Handling (Listener
 echo -e " \033[32m[5]\033[0m  Week 5: Advanced Swing Components (JTable, JTree, File Manager)"
 echo -e " \033[32m[6]\033[0m  Week 6: Introduction to Modern JavaFX (NetBeans Edition)"
 echo -e " \033[36m[7]\033[0m  Week 7: Modern JavaFX Event Handling (Filters, Drag&Drop, Custom)"
+echo -e " \033[36m[8]\033[0m  Week 8: Properties and Bindings in JavaFX (Reactive UI)"
+echo -e " \033[36m[9]\033[0m  Week 9: Asynchronous Programming in JavaFX (Task & Service)"
 echo -e " \033[35m[10]\033[0m Final Project: University Management System (Neon PostgreSQL)"
 echo "----------------------------------------------------------"
 echo " Quick GUI Dashboards:"
@@ -60,6 +70,8 @@ echo -e " \033[32m[G4]\033[0m Week 4 Master GUI Dashboard"
 echo -e " \033[32m[G5]\033[0m Week 5 Master GUI Dashboard"
 echo -e " \033[32m[G6]\033[0m Week 6 Master GUI Dashboard (Modern JavaFX)"
 echo -e " \033[36m[G7]\033[0m Week 7 Master JavaFX Dashboard"
+echo -e " \033[36m[G8]\033[0m Week 8 Master JavaFX Dashboard"
+echo -e " \033[36m[G9]\033[0m Week 9 Master JavaFX Dashboard"
 echo "----------------------------------------------------------"
 echo " [Q]  Quit"
 echo -e "\033[36m==========================================================\033[0m"
@@ -74,6 +86,8 @@ case "${choice^^}" in
     5)  bash "$DIR/run-week5.sh" ;;
     6)  bash "$DIR/run-week6.sh" ;;
     7)  bash "$DIR/run-week7.sh" ;;
+    8)  bash "$DIR/run-week8.sh" ;;
+    9)  bash "$DIR/run-week9.sh" ;;
     10|U) bash "$DIR/run-university.sh" ;;
     G2) bash "$DIR/run-week2.sh" --launcher ;;
     G3) bash "$DIR/run-week3.sh" --launcher ;;
@@ -81,6 +95,8 @@ case "${choice^^}" in
     G5) bash "$DIR/run-week5.sh" --launcher ;;
     G6) bash "$DIR/run-week6.sh" --launcher ;;
     G7) bash "$DIR/run-week7.sh" --launcher ;;
+    G8) bash "$DIR/run-week8.sh" --launcher ;;
+    G9) bash "$DIR/run-week9.sh" --launcher ;;
     Q)  echo "Exiting." ;;
     *)  echo "Invalid choice '$choice'." ;;
 esac

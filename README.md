@@ -14,6 +14,8 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
 - [Week 5 Advanced Swing Components Guide](documentation/Week%205%20Advanced%20Swing%20Components.md)
 - [Week 6 Introduction to Modern JavaFX Guide](documentation/Week%206%20Introduction%20to%20Modern%20JavaFX.md)
 - [Week 7 Self-Paced Event Handling in JavaFX](documentation/Week%207%20Self%20Paced%20Guide_Event%20Handling%20in%20JavaFX.md)
+- [Week 8 Self-Paced Properties and Bindings in JavaFX](documentation/Week%208%20Self-Paced%20Guide_%20Properties%20and%20Bindings%20in%20JavaFX.md)
+- [Week 9 Self-Paced Asynchronous Programming in JavaFX](documentation/Week%209%20Self%20Paced%20Guide_Asynchronous%20Programming%20in%20JavaFX.md)
 - [Week 10 Final Project Capstone - University Management System](documentation/Week%2010%20Final%20Project%20Capstone%20-%20University%20Management%20System.md)
 
 ---
@@ -43,14 +45,14 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
 >    ```bash
 >    ./scripts/run-week4.sh --all        # Launches all 10 Week 4 activities at once
 >    ./scripts/run-week4.sh --launcher   # Opens the visual Master GUI Launcher
->    ./scripts/run-all.sh                # Main menu for all weeks (Weeks 1 to 5)
+>    ./scripts/run-all.sh                # Main menu for all weeks (Weeks 1 to 10)
 >    ```
 >
 > 3. **If You Are Using Windows PowerShell or CMD:**
 >    ```powershell
 >    .\scripts\run-week4.ps1 -All        # Launches all 10 Week 4 activities at once
 >    .\scripts\run-week4.ps1 -Launcher   # Opens the visual Master GUI Launcher
->    .\scripts\run-all.ps1               # Main menu for all weeks (Weeks 1 to 7, 10)
+>    .\scripts\run-all.ps1               # Main menu for all weeks (Weeks 1 to 10)
 >    ```
 >
 > 4. **Final Capstone: University Management System (JavaFX + Neon PostgreSQL):**
@@ -63,7 +65,7 @@ Comprehensive self-paced student guides and theory notes are located in the [`do
 
 ## 🔨 Project Build Pipeline (Like `npm run build`)
 
-To ensure everything in the repository compiles cleanly and all 55+ source files and launchers are verified with zero errors, a centralized build pipeline is provided:
+To ensure everything in the repository compiles cleanly and all 80+ source files and launchers are verified with zero errors, a centralized build pipeline is provided:
 
 | Environment | Command | Clean & Rebuild |
 | :--- | :--- | :--- |
@@ -89,7 +91,7 @@ All execution scripts are maintained inside the [`scripts/`](scripts/) folder to
 
 ##### **For Git Bash / Linux / macOS (`.sh`):**
 ```bash
-./scripts/run-all.sh            # Main interactive menu for all weeks (1 to 5)
+./scripts/run-all.sh            # Main interactive menu for all weeks (1 to 10)
 ./scripts/run-week4.sh          # Week 4 interactive menu
 ./scripts/run-week4.sh --all    # Launch all 10 Week 4 activities concurrently
 ./scripts/run-week4.sh --launcher # Open Week 4 Master GUI Dashboard
@@ -97,7 +99,7 @@ All execution scripts are maintained inside the [`scripts/`](scripts/) folder to
 
 ##### **For Windows PowerShell (`.ps1`):**
 ```powershell
-.\scripts\run-all.ps1           # Main interactive menu for all weeks (1 to 5)
+.\scripts\run-all.ps1           # Main interactive menu for all weeks (1 to 10)
 .\scripts\run-week4.ps1         # Week 4 interactive menu
 .\scripts\run-week4.ps1 -All    # Launch all 10 Week 4 activities concurrently
 .\scripts\run-week4.ps1 -Launcher # Open Week 4 Master GUI Dashboard
@@ -105,12 +107,17 @@ All execution scripts are maintained inside the [`scripts/`](scripts/) folder to
 
 | Week / Scope | Git Bash (`.sh`) | PowerShell (`.ps1`) | Run All Concurrently | Master GUI Dashboard |
 | :--- | :--- | :--- | :--- | :--- |
-| **All Weeks (1–5)** | `./scripts/run-all.sh` | `.\scripts\run-all.ps1` | Interactive Menu | Direct dashboard shortcuts |
+| **All Weeks (1–10)** | `./scripts/run-all.sh` | `.\scripts\run-all.ps1` | Interactive Menu | Direct dashboard shortcuts |
 | **Week 1** | `./scripts/run-week1.sh` | `.\scripts\run-week1.ps1` | `--all` / `-All` | Single activity selector |
 | **Week 2** | `./scripts/run-week2.sh` | `.\scripts\run-week2.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
 | **Week 3** | `./scripts/run-week3.sh` | `.\scripts\run-week3.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
 | **Week 4** | `./scripts/run-week4.sh` | `.\scripts\run-week4.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
 | **Week 5** | `./scripts/run-week5.sh` | `.\scripts\run-week5.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
+| **Week 6** | `./scripts/run-week6.sh` | `.\scripts\run-week6.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
+| **Week 7** | `./scripts/run-week7.sh` | `.\scripts\run-week7.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
+| **Week 8** | `./scripts/run-week8.sh` | `.\scripts\run-week8.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
+| **Week 9** | `./scripts/run-week9.sh` | `.\scripts\run-week9.ps1` | `--all` / `-All` | `--launcher` / `-Launcher` |
+| **Week 10 (Capstone)** | `./scripts/run-university.sh` | `.\scripts\run-university.ps1` | — | Launches JavaFX App |
 
 *(You can also launch any Master GUI Dashboard directly with Java: `java -cp Week02-observer-pattern Week2Launcher`, `java -cp week03-swing-gui Week3Launcher`, `java -cp week04-event-handling Week4Launcher`, or `java -cp week05-advanced-swing Week5Launcher`)*
 
@@ -586,6 +593,92 @@ mvn -f week07-javafx-events/pom.xml javafx:run
 
 ---
 
+## 🔗 Week 8: Properties and Bindings in JavaFX
+
+A complete modern JavaFX Maven project ([`week08-javafx-bindings/`](week08-javafx-bindings/)) demonstrating observable JavaFX properties, `InvalidationListener` vs. `ChangeListener`, unidirectional and bidirectional property bindings, and a reactive registration form capstone. Self-check notes and reflection are in [`week08-javafx-bindings/SelfAssessment.md`](week08-javafx-bindings/SelfAssessment.md).
+
+### Activities & Implementations
+
+#### Activity 1 & 2: Observable Properties & Listeners (`Person` + `ListenerDemo`)
+Defines an observable `Person` model using `SimpleStringProperty` and `SimpleIntegerProperty`, demonstrating how `InvalidationListener` and `ChangeListener` respond to value changes and JavaFX's equality check optimization.
+- Source: [`week08-javafx-bindings/src/main/java/com/example/Person.java`](week08-javafx-bindings/src/main/java/com/example/Person.java) & [`week08-javafx-bindings/src/main/java/com/example/ListenerDemo.java`](week08-javafx-bindings/src/main/java/com/example/ListenerDemo.java)
+```bash
+mvn -f week08-javafx-bindings/pom.xml javafx:run -Djavafx.mainClass=com.example.ListenerDemo
+```
+
+#### Activity 3: Unidirectional Binding
+Binds `greetingLabel.textProperty()` to `nameField.textProperty().concat(", welcome!")` for real-time one-way synchronization.
+- Source: [`week08-javafx-bindings/src/main/java/com/example/UnidirectionalDemo.java`](week08-javafx-bindings/src/main/java/com/example/UnidirectionalDemo.java)
+```bash
+mvn -f week08-javafx-bindings/pom.xml javafx:run -Djavafx.mainClass=com.example.UnidirectionalDemo
+```
+
+#### Activity 4: Bidirectional Binding
+Synchronizes a `TextField` (`StringProperty`) and `Slider` (`DoubleProperty`) in both directions using `bindBidirectional()` and `NumberStringConverter`.
+- Source: [`week08-javafx-bindings/src/main/java/com/example/BidirectionalDemo.java`](week08-javafx-bindings/src/main/java/com/example/BidirectionalDemo.java)
+```bash
+mvn -f week08-javafx-bindings/pom.xml javafx:run -Djavafx.mainClass=com.example.BidirectionalDemo
+```
+
+#### Activity 5: Capstone — Reactive Registration Form
+Builds a reactive form with a live character counter, live bio preview (`Bindings.concat(...)`), and declarative submit button disable bindings (`isEmpty()`, `Bindings.createBooleanBinding(...)` checking `"@"` containment, and `length().greaterThan(150)`).
+- Source: [`week08-javafx-bindings/src/main/java/com/example/ReactiveFormApp.java`](week08-javafx-bindings/src/main/java/com/example/ReactiveFormApp.java)
+```bash
+mvn -f week08-javafx-bindings/pom.xml javafx:run -Djavafx.mainClass=com.example.ReactiveFormApp
+```
+
+#### Master JavaFX Dashboard
+Single-click graphical dashboard with cards for each Week 8 activity and an integrated console output viewer for `ListenerDemo`.
+- Source: [`week08-javafx-bindings/src/main/java/com/example/Week8Launcher.java`](week08-javafx-bindings/src/main/java/com/example/Week8Launcher.java)
+```bash
+mvn -f week08-javafx-bindings/pom.xml javafx:run
+```
+
+---
+
+## ⚡ Week 9: Asynchronous Programming in JavaFX
+
+A complete modern JavaFX Maven project ([`week09-async-javafx/`](week09-async-javafx/)) demonstrating blocking UI operations, background `javafx.concurrent.Task` execution, thread-safe UI updates with `Platform.runLater()`, real-time progress property binding, and restartable/cancellable `javafx.concurrent.Service` workflows. Self-check answers and API fix notes are in [`week09-async-javafx/SelfAssessment.md`](week09-async-javafx/SelfAssessment.md).
+
+### Activities & Implementations
+
+#### Activity 1: The Freeze (Blocking Operations)
+Demonstrates why executing blocking operations (`Thread.sleep(5000)`) directly inside a JavaFX event handler freezes the JavaFX Application Thread and stalls window movement, resizing, and repaints.
+- Source: [`week09-async-javafx/src/main/java/com/example/FreezeDemo.java`](week09-async-javafx/src/main/java/com/example/FreezeDemo.java)
+```bash
+mvn -f week09-async-javafx/pom.xml javafx:run -Djavafx.mainClass=com.example.FreezeDemo
+```
+
+#### Activity 2: The Fix (`Task` & Safe UI Updates)
+Offloads the 5-second sleep onto a background worker thread using `javafx.concurrent.Task<Void>` and marshals completion UI updates safely back onto the FX Application Thread with `Platform.runLater()`.
+- Source: [`week09-async-javafx/src/main/java/com/example/TaskDemo.java`](week09-async-javafx/src/main/java/com/example/TaskDemo.java)
+```bash
+mvn -f week09-async-javafx/pom.xml javafx:run -Djavafx.mainClass=com.example.TaskDemo
+```
+
+#### Activity 3: Live Progress (Real-Time Feedback)
+Simulates a chunked file download using `updateProgress(i, 100)` and `updateMessage(...)` bound directly to a `ProgressBar` and `Label`, cleanly unbinding on completion.
+- Source: [`week09-async-javafx/src/main/java/com/example/ProgressDemo.java`](week09-async-javafx/src/main/java/com/example/ProgressDemo.java)
+```bash
+mvn -f week09-async-javafx/pom.xml javafx:run -Djavafx.mainClass=com.example.ProgressDemo
+```
+
+#### Activity 4: The `Service` Class (Capstone)
+Implements a reusable, restartable, and cancellable `DataSyncService extends Service<String>` featuring an indeterminate `ProgressIndicator`, `isCancelled()` loop checks, and `setOnSucceeded` / `setOnFailed` handlers.
+- Source: [`week09-async-javafx/src/main/java/com/example/ServiceDemo.java`](week09-async-javafx/src/main/java/com/example/ServiceDemo.java)
+```bash
+mvn -f week09-async-javafx/pom.xml javafx:run -Djavafx.mainClass=com.example.ServiceDemo
+```
+
+#### Master JavaFX Dashboard
+Single-click graphical dashboard with cards for each Week 9 concurrency activity and concurrent multi-window launching.
+- Source: [`week09-async-javafx/src/main/java/com/example/Week9Launcher.java`](week09-async-javafx/src/main/java/com/example/Week9Launcher.java)
+```bash
+mvn -f week09-async-javafx/pom.xml javafx:run
+```
+
+---
+
 ### Week 10: Final Project Capstone — University Management System (`UniversitySystem/`)
 
 The culminating capstone project applying Event-Driven Architecture (EDA), Producer-Consumer background concurrency, scheduled tasks, and reactive JavaFX data binding with a live cloud PostgreSQL database on Neon. Detailed design and handbook are in [documentation/Week 10 Final Project Capstone - University Management System.md](documentation/Week%2010%20Final%20Project%20Capstone%20-%20University%20Management%20System.md).
@@ -643,7 +736,7 @@ To keep the repository clean, structured, and easy to run across all modules, de
 
 ### 1. Organized Scripts Directory (`scripts/`)
 All runner scripts are consolidated in [`scripts/`](scripts/) to prevent root-directory clutter:
-- **[`scripts/run-all.ps1`](scripts/run-all.ps1)**: Interactive hub dispatcher to explore or launch any activity from Week 1 through Week 7.
+- **[`scripts/run-all.ps1`](scripts/run-all.ps1)**: Interactive hub dispatcher to explore or launch any activity from Week 1 through Week 10.
 - **[`scripts/run-week1.ps1`](scripts/run-week1.ps1)**: CLI & GUI launcher with interactive menu, `-All` flag, and `-Activity <id>`.
 - **[`scripts/run-week2.ps1`](scripts/run-week2.ps1)**: Observer pattern test runner executing console simulations in non-closing windows.
 - **[`scripts/run-week3.ps1`](scripts/run-week3.ps1)**: Controls all 9 layout and EDT activities with `-Launcher` GUI shortcut.
@@ -651,16 +744,20 @@ All runner scripts are consolidated in [`scripts/`](scripts/) to prevent root-di
 - **[`scripts/run-week5.ps1`](scripts/run-week5.ps1)**: Controls all 5 advanced Swing activities with `-Launcher` GUI shortcut.
 - **[`scripts/run-week6.ps1`](scripts/run-week6.ps1)**: Controls all 5 modern JavaFX activities with `-Launcher` GUI shortcut.
 - **[`scripts/run-week7.ps1`](scripts/run-week7.ps1)**: Controls all 4 JavaFX event activities with `-Launcher` GUI shortcut.
+- **[`scripts/run-week8.ps1`](scripts/run-week8.ps1)**: Controls all 4 JavaFX property & binding activities with `-Launcher` GUI shortcut.
+- **[`scripts/run-week9.ps1`](scripts/run-week9.ps1)**: Controls all 4 JavaFX asynchronous concurrency activities with `-Launcher` GUI shortcut.
 - **[`scripts/run-university.ps1`](scripts/run-university.ps1)**: Launcher and test runner for Week 10 University Management System (JavaFX + Neon PostgreSQL).
 
 ### 2. Standalone Master GUI Dashboards
-Built for Week 2, Week 3, Week 4, Week 5, Week 6, and Week 7, these dashboards allow single-click execution or concurrent launching of every activity:
+Built for Week 2, Week 3, Week 4, Week 5, Week 6, Week 7, Week 8, and Week 9, these dashboards allow single-click execution or concurrent launching of every activity:
 - **[`Week02-observer-pattern/Week2Launcher.java`](Week02-observer-pattern/Week2Launcher.java)** (Interactive dashboard with live console output stream)
 - **[`week03-swing-gui/Week3Launcher.java`](week03-swing-gui/Week3Launcher.java)**
 - **[`week04-event-handling/Week4Launcher.java`](week04-event-handling/Week4Launcher.java)**
 - **[`week05-advanced-swing/Week5Launcher.java`](week05-advanced-swing/Week5Launcher.java)**
 - **[`week06-javafx/Week6Launcher.java`](week06-javafx/Week6Launcher.java)**
 - **[`week07-javafx-events/src/main/java/com/example/Week7Launcher.java`](week07-javafx-events/src/main/java/com/example/Week7Launcher.java)**
+- **[`week08-javafx-bindings/src/main/java/com/example/Week8Launcher.java`](week08-javafx-bindings/src/main/java/com/example/Week8Launcher.java)**
+- **[`week09-async-javafx/src/main/java/com/example/Week9Launcher.java`](week09-async-javafx/src/main/java/com/example/Week9Launcher.java)**
 
 ### 3. Process Isolation & Safety
 - Each application launched through the GUI dashboards or PowerShell scripts runs as an independent OS process via Java's `ProcessBuilder` or PowerShell's `Start-Process`.
