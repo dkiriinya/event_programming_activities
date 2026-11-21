@@ -41,8 +41,15 @@ UniversitySystem/
 
 ## Database Setup (PostgreSQL on Neon)
 
-1. [`DatabaseUtil.java`](../UniversitySystem/src/main/java/com/university/DatabaseUtil.java) reads `DATABASE_URL` or `POSTGRES_URL` from `.env.local`, `.env`, or your system environment variables.
-2. On first run, it automatically creates the `programs` and `students` tables and seeds default programs (`Bachelor of Computer Science`, `Diploma in IT`) if empty.
+> **Note:** This project uses **PostgreSQL on Neon** instead of a local MySQL setup because I wanted to try out cloud serverless Postgres and avoid requiring a local database server on every machine.
+
+**Prerequisite:** You need a `.env` or `.env.local` file with your Neon connection string before running the app or tests:
+1. Copy [`.env.example`](../.env.example) to `.env` (or `.env.local`) in the repository root.
+2. Paste your Neon connection string into `DATABASE_URL`:
+   ```env
+   DATABASE_URL="postgresql://USER:PASSWORD@YOUR-NEON-HOST.neon.tech/neondb?sslmode=require"
+   ```
+3. On first run, [`DatabaseUtil.java`](../UniversitySystem/src/main/java/com/university/DatabaseUtil.java) reads `.env.local`, `.env`, or system environment variables, creates the `programs` and `students` tables, and seeds default programs (`Bachelor of Computer Science`, `Diploma in IT`) if empty.
 
 ---
 

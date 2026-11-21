@@ -88,6 +88,17 @@ Each week script supports:
 
 A JavaFX desktop app backed by **PostgreSQL on Neon**.
 
+> **Note:** The University System uses **Neon (serverless cloud PostgreSQL)** instead of a local MySQL server because I wanted to try out Neon and make the app runnable without requiring a local database installation.
+
+### Prerequisites (`.env` Setup)
+1. Create a free database at [neon.tech](https://neon.tech) and copy your connection string.
+2. Copy [`.env.example`](.env.example) to `.env` (or `.env.local`) in the repo root and set `DATABASE_URL`:
+   ```env
+   DATABASE_URL="postgresql://USER:PASSWORD@YOUR-NEON-HOST.neon.tech/neondb?sslmode=require"
+   ```
+   *(Tables `programs` and `students` plus sample programs are created automatically on first run.)*
+
+### Run & Test
 - **Launch the app:**
   ```bash
   mvn -f UniversitySystem/pom.xml javafx:run
@@ -97,7 +108,6 @@ A JavaFX desktop app backed by **PostgreSQL on Neon**.
   ```bash
   npm run test:university
   ```
-- **Database config:** Reads `DATABASE_URL` or `POSTGRES_URL` from `.env.local`, `.env`, or your system environment variables. Tables (`programs`, `students`) and sample programs are created automatically on first run.
 
 ---
 
